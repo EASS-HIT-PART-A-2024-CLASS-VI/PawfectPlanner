@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pawfect-planner-backend
+    ports:
+      - "8000:8000"
+    env_file: 
+      - .env
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+
+  gemini-service:
+    build:
+      context: ./backend/gemini-service  
+      dockerfile: gemini-service/Dockerfile
+    container_name: gemini-service
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+    env_file: 
+      - .env
+    volumes:
+      - ./backend/gemini-service:/app  
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  data:

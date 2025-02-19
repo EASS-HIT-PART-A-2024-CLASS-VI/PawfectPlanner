@@ -1,0 +1,14 @@
+.pet-profile-container {
+    background: #F5DEB3; /* Wheat-like color */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .pet-profile-title {
+    color: #5A3E36; /* Darker brown for contrast */
+  }
+  
+  button {
+    background-color: #87CEEB; /* Sky Blue */
+  }
+  

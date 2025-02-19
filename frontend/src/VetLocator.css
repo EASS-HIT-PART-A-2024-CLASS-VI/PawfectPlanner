@@ -1,0 +1,20 @@
+.vet-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .vet-button {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .vet-button:hover {
+    background: #0056b3;
+  }
+  
