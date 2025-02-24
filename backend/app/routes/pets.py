@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from backend.app.schemas import PetCreate, PetUpdate, PetResponse
-from backend.app.models import Pet as PetModel
-from backend.app.database import get_db
+from app.schemas import PetCreate, PetUpdate, PetResponse
+from app.models import Pet as PetModel
+from app.database import get_db
 import logging
 
 logger = logging.getLogger(__name__)

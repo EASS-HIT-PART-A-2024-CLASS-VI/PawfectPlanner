@@ -1,30 +1,31 @@
 # Use the latest supported Python version
-FROM python:3.12-slim  
+FROM python:3.12-slim
 
-# Set the working directory inside the container
-WORKDIR /app  
+# Set the working directory in the container
+WORKDIR /app
 
-# Install system dependencies
+# Install necessary system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip
-RUN pip install --no-cache-dir --upgrade pip  
+# Copy the requirements file into the container
+COPY requirements.txt .
 
-# Copy the requirements file first to cache dependencies efficiently
-COPY ./requirements.txt .  
+# Upgrade pip and install dependencies
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt  
+# Explicitly install uvicorn and email-validator in case they're missing
+RUN pip install --no-cache-dir uvicorn email-validator pydantic[email]
 
-# Copy the entire backend application
-COPY . .  
+# Copy the application code
+COPY . /app/
 
-# Expose FastAPI default port
-EXPOSE 8000  
+# Ensure the Python path is correct
+ENV PYTHONPATH=/app
 
-# Start FastAPI with Uvicorn
+# Run the application
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

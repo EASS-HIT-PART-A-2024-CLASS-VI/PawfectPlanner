@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from backend.app.models import Treatment
-from backend.app.schemas import TreatmentCreate, TreatmentUpdate, TreatmentResponse
-from backend.app.database import get_db
+from app.models import Treatment
+from app.schemas import TreatmentCreate, TreatmentUpdate, TreatmentResponse
+from app.database import get_db
 from typing import List
 import os
 from ics import Calendar, Event

@@ -1,4 +1,4 @@
-fastapi[all]
+fastapi
 uvicorn
 sqlalchemy
 psycopg2-binary
@@ -11,5 +11,4 @@ python-dotenv
 httpx
 redis
 ics
-fastapi-cors
-fastapi-staticfiles
+email-validator
