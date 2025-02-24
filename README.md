@@ -16,7 +16,7 @@ The project includes:
 - **Health Check API 🏥**: Provides basic health-related insights via APIs.
 - **ICS Calendar Export 📅**: Export reminders to `.ics` files for Google Calendar, Outlook, etc.
 - **Dynamic Breed Information 🔍**: Fetch breed-related data from external APIs.
-- **Local Vet Search 🏥**: Locate nearby veterinary clinics using Google Maps API.
+- **Local Vet Search 🏥**: Locate nearby veterinary clinics using Google Maps.
 - **Security 🔐**: Implements secure authentication using JWT and bcrypt.
 - **Microservices Architecture 🏗️**: Modular services for scalability and maintainability.
 - **Dockerized 🐳**: Fully containerized for easy deployment.

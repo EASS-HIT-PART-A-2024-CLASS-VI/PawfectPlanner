@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from backend.app.models import Reminder
-from backend.app.schemas import ReminderCreate, ReminderUpdate, ReminderResponse
-from backend.app.database import get_db
+from app.models import Reminder
+from app.schemas import ReminderCreate, ReminderUpdate, ReminderResponse
+from app.database import get_db
 import logging
 from ics import Calendar, Event
 import datetime
