@@ -1,4 +1,7 @@
 # 🐾 Pawfect Planner  
+
+![alt text](image.png)
+
 A **micro-services** based pet management application designed to help pet owners **organize pet care, track vaccinations, set reminders**, and more.  
 The project includes:  
 - A **FastAPI-based backend** for pet data management.  

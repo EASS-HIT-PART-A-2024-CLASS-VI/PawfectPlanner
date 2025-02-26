@@ -1,0 +1,64 @@
+.pet-profile-container {
+  background: #F5DEB3;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.pet-profile-title {
+  color: #5A3E36;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 500px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.health-issues-list, .behavior-issues-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.health-issue-item, .behavior-issue-item {
+  background: #eee;
+  padding: 5px;
+  margin: 3px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background-color: #4682B4;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+}
+
+button:hover {
+  background-color: #315A89;
+}

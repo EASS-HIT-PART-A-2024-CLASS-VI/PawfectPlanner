@@ -1,0 +1,26 @@
+.gemini-container {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .gemini-container button {
+    background-color: #4682B4;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .gemini-container button:hover {
+    background-color: #315A89;
+  }
+  
+  .gemini-response {
+    margin-top: 10px;
+    font-style: italic;
+    color: #333;
+  }
+  

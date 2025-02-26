@@ -1,0 +1,18 @@
+.dashboard-container {
+    text-align: center;
+    padding: 20px;
+    background: #FAE6C9;
+  }
+  
+  .pet-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .pet-item {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+  

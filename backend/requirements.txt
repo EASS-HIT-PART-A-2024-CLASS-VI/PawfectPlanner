@@ -1,14 +1,12 @@
 fastapi
-uvicorn
+uvicorn[standard]  # Uvicorn with standard dependencies (needed for production)
 sqlalchemy
-psycopg2-binary
+psycopg2-binary  # PostgreSQL database adapter
 pydantic
-passlib[bcrypt]
-python-jose
-pyjwt
-bcrypt
-python-dotenv
-httpx
-redis
-ics
-email-validator
+passlib[bcrypt]  # Secure password hashing
+python-jose[cryptography]  # JWT handling for authentication
+python-dotenv  # For managing environment variables
+httpx  # Async HTTP requests
+redis  # Redis support for caching/session storage
+ics  # iCalendar file handling
+email-validator  # Email validation

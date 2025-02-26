@@ -1,10 +1,18 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
+import os
 
-# Ensure the correct database URL is used
-DATABASE_URL = "postgresql://user:password@db:5432/pets_db"
+# Load environment variables from .env file
+load_dotenv()
 
-# Create the SQLAlchemy engine without SQLite-specific options
+# Retrieve the DATABASE_URL from environment variables
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL is not set in the environment variables.")
+
+# Create the SQLAlchemy engine
 engine = create_engine(DATABASE_URL)
 
 # Configure session handling
