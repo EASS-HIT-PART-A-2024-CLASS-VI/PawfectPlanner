@@ -1,6 +1,5 @@
-🐾 Pawfect Planner
-
 <div align="center">
+   #🐾 Pawfect Planner
   <img src="frontend/public/EntryBackground.png" alt="Pawfect Planner Logo" width="50%">
 
   [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
@@ -12,22 +11,22 @@
 
 **A microservices-based pet management solution powered by AI and modular architecture.**
 
-🎥 Demo
+🎥 **Demo**
 📽️ Coming soon!
 
-📌 Features
-🔹 Backend
-✅ Pet Profiles 🐶🐱 – Manage detailed pet profiles, including breed, age, weight, behavior issues, and health history.
-✅ Vaccination Tracking 💉 – Store vaccination records and upcoming vaccinations.
-✅ Reminders ⏰ – Set and manage reminders for vet visits, vaccinations, and medications.
-✅ ICS Calendar Export 📅 – Export reminders to .ics files for Google Calendar, Outlook, etc.
-✅ Dynamic Breed Information 🔍 – Fetch breed-related data from external APIs (The Dog API, The Cat API).
-✅ Local Vet Search 🏥 – Locate nearby veterinary clinics using Google Maps.
-✅ Secure Authentication 🔐 – Implements JWT authentication and user authorization.
-✅ Microservices Architecture 🏗️ – Modular services (LLM [Google Gemini], PDF export of pet profiles, ICS reminders).
-🔹 Frontend
-✅ React-based UI 🎨 – A clean, user-friendly interface for pet data management.
-✅ Interactive Reminders & Notifications 🔔 – Auto-renewing reminders (ICS files) to prevent missing treatments.
+📌 **Features**
+🔹 **Backend**
+✅ **Pet Profiles** 🐶🐱 – Manage detailed pet profiles, including breed, age, weight, behavior issues, and health history.
+✅ **Vaccination Tracking** 💉 – Store vaccination records and upcoming vaccinations.
+✅ **Reminders** ⏰ – Set and manage reminders for vet visits, vaccinations, and medications.
+✅ **ICS Calendar Export** 📅 – Export reminders to .ics files for Google Calendar, Outlook, etc.
+✅ **Dynamic Breed Information** 🔍 – Fetch breed-related data from external APIs (The Dog API, The Cat API).
+✅ **Local Vet Search** 🏥 – Locate nearby veterinary clinics using Google Maps.
+✅ **Secure Authentication** 🔐 – Implements JWT authentication and user authorization.
+✅ **Microservices Architecture** 🏗️ – Modular services (LLM [Google Gemini], PDF export of pet profiles, ICS reminders).
+🔹 **Frontend**
+✅ **React-based UI** 🎨 – A clean, user-friendly interface for pet data management.
+✅ **Interactive Reminders & Notifications** 🔔 – Auto-renewing reminders (ICS files) to prevent missing treatments.
 
 🛠️ Technologies Used
 Backend
@@ -59,25 +58,30 @@ Ensure you have:
 
 🚀 Installation and Setup
 1️⃣ Clone the Repository
-'''git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
-cd PawfectPlanner'''
+'''bash
+git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
+cd PawfectPlanner
+'''
 
 2️⃣ Set Up Environment Variables
 Create a .env file at the root directory:
-'''echo 'POSTGRES_USER=postgres
+'''bashecho 'POSTGRES_USER=postgres
 POSTGRES_PASSWORD=DB4PawfectPlanner
 POSTGRES_DB=pets_db
 DATABASE_URL=postgresql://postgres:DB4PawfectPlanner@db:5432/pets_db
 GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>
-DOG_API_KEY=<YOUR_DOG_API_KEY>' > .env'''
+DOG_API_KEY=<YOUR_DOG_API_KEY>' > .env
+'''
 
 💡 Note: Replace <YOUR_GEMINI_API_KEY> and <YOUR_DOG_API_KEY> with valid API keys. All PostgreSQL data is public, feel free to use it or replace with your own.
-Need an API key? follow links and instructions here <https://ai.google.dev/gemini-api/docs/api-key> for Gemini API KEY, and here <https://www.thedogapi.com/> for The Dog API key (works for The Cat API as well)
+Need an API key? [Google Gemini API Key](https://ai.google.dev/gemini-api/docs/api-key), [The Dog API](https://www.thedogapi.com/) key (works for The Cat API as well)
 
 🐳 Running the Project with Docker
 3️⃣ Start the Full Application
 Run Docker Compose to build and launch all services (backend, frontend, database, and microservices):
-'''docker compose up --build'''
+'''bash
+docker compose up --build
+'''
 
 4️⃣ Access the Services:
 
@@ -137,26 +141,34 @@ Run Locally:
 pytest
 
 Run Inside Docker:
-'''docker exec -it pawfect-planner_app_1 pytest'''
+'''bash
+docker exec -it pawfect-planner_app_1 pytest
+'''
 
 🆘 Troubleshooting
 1️⃣ Reset & Rebuild Everything
-'''docker compose down --rmi all --volumes --remove-orphans
-docker compose up --build'''
+'''bash
+docker compose down --rmi all --volumes --remove-orphans
+docker compose up --build
+'''
 
 2️⃣ Reset Frontend
-'''cd frontend
+'''bash
+cd frontend
 rm -rf node_modules package-lock.json
 npm cache clean --force
 npm install
-npm run dev'''
+npm run dev
+'''
 
 3️⃣ Reset Backend (Python Virtual Environment)
-'''cd backend
+'''bash
+cd backend
 python3 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload'''
+uvicorn app.main:app --reload
+'''
 
 
 🎉 Get Started with Pawfect Planner!
