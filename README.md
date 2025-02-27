@@ -1,15 +1,15 @@
 🐾 Pawfect Planner
 
 <div align="center">
-  (https://raw.githubusercontent.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner/main/frontend/public/EntryBackground.png)
-
-  **A microservices-based pet management solution powered by AI and modular architecture.**
+  <img src="frontend/public/EntryBackground.png" alt="Pawfect Planner Logo" width="50%">
 
   [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
   [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org)
   [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
   [![Gemini AI](https://img.shields.io/badge/Gemini-AI-blue?style=for-the-badge&logo=google&logoColor=white)](https://gemini.google.com/chat)
   [![The Dog API](https://img.shields.io/badge/The%20Dog%20API-🐶-blue?style=for-the-badge)](https://thedogapi.com/)
+
+    **A microservices-based pet management solution powered by AI and modular architecture.**
 </div>
 
 🎥 Demo
