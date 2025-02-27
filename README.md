@@ -3,7 +3,7 @@
 ![Happy Pet](frontend/public/EntryBackground.png)
 
 <div align="center">
-  <img src="frontend/src/static/images/pawfect_planner_logo.png" alt="Pawfect Planner Logo" width="50%">
+  ![Pawfect Planner](https://raw.githubusercontent.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner/main/frontend/public/EntryBackground.png)
 
   **A microservices-based pet management solution powered by AI and modular architecture.**
 
@@ -61,26 +61,25 @@ Ensure you have:
 
 🚀 Installation and Setup
 1️⃣ Clone the Repository
-git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
-cd PawfectPlanner
+'''git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
+cd PawfectPlanner'''
 
 2️⃣ Set Up Environment Variables
 Create a .env file at the root directory:
-echo 'POSTGRES_USER=postgres
+'''echo 'POSTGRES_USER=postgres
 POSTGRES_PASSWORD=DB4PawfectPlanner
 POSTGRES_DB=pets_db
 DATABASE_URL=postgresql://postgres:DB4PawfectPlanner@db:5432/pets_db
-#All PostgreSQL .env are public, feel free to use them or replace with your own.
 GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>
-DOG_API_KEY=<YOUR_DOG_API_KEY>' > .env
+DOG_API_KEY=<YOUR_DOG_API_KEY>' > .env'''
 
-💡 Note: Replace <YOUR_GEMINI_API_KEY> and <YOUR_DOG_API_KEY> with valid API keys.
+💡 Note: Replace <YOUR_GEMINI_API_KEY> and <YOUR_DOG_API_KEY> with valid API keys. All PostgreSQL data is public, feel free to use it or replace with your own.
 Need an API key? follow links and instructions here <https://ai.google.dev/gemini-api/docs/api-key> for Gemini API KEY, and here <https://www.thedogapi.com/> for The Dog API key (works for The Cat API as well)
 
 🐳 Running the Project with Docker
 3️⃣ Start the Full Application
 Run Docker Compose to build and launch all services (backend, frontend, database, and microservices):
-docker compose up --build
+'''docker compose up --build'''
 
 4️⃣ Access the Services:
 
@@ -140,26 +139,26 @@ Run Locally:
 pytest
 
 Run Inside Docker:
-docker exec -it pawfect-planner_app_1 pytest
+'''docker exec -it pawfect-planner_app_1 pytest'''
 
 🆘 Troubleshooting
 1️⃣ Reset & Rebuild Everything
-docker compose down --rmi all --volumes --remove-orphans
-docker compose up --build
+'''docker compose down --rmi all --volumes --remove-orphans
+docker compose up --build'''
 
 2️⃣ Reset Frontend
-cd frontend
+'''cd frontend
 rm -rf node_modules package-lock.json
 npm cache clean --force
 npm install
-npm run dev
+npm run dev'''
 
 3️⃣ Reset Backend (Python Virtual Environment)
-cd backend
+'''cd backend
 python3 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload'''
 
 
 🎉 Get Started with Pawfect Planner!
