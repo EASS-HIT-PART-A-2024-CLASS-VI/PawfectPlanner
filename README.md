@@ -1,7 +1,5 @@
 🐾 Pawfect Planner
 
-![Happy Pet](frontend/public/EntryBackground.png)
-
 <div align="center">
   ![Pawfect Planner](https://raw.githubusercontent.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner/main/frontend/public/EntryBackground.png)
 
