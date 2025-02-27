@@ -68,13 +68,16 @@
 
 ## 🚀 Installation and Setup
 
-### 1️⃣ Clone the Repository
+### 📥 Clone the Repository
 ```bash
 git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
 cd PawfectPlanner
+'''
+---
 2️⃣ Set Up Environment Variables
 Create a .env file at the root directory:
-'''bashecho 'POSTGRES_USER=postgres
+'''bash
+echo 'POSTGRES_USER=postgres
 POSTGRES_PASSWORD=DB4PawfectPlanner
 POSTGRES_DB=pets_db
 DATABASE_URL=postgresql://postgres:DB4PawfectPlanner@db:5432/pets_db
@@ -84,14 +87,14 @@ DOG_API_KEY=<YOUR_DOG_API_KEY>' > .env
 
 💡 Note: Replace <YOUR_GEMINI_API_KEY> and <YOUR_DOG_API_KEY> with valid API keys. All PostgreSQL data is public, feel free to use it or replace with your own.
 Need an API key? [Google Gemini API Key](https://ai.google.dev/gemini-api/docs/api-key), [The Dog API](https://www.thedogapi.com/) key (works for The Cat API as well)
-
+---
 🐳 Running the Project with Docker
 3️⃣ Start the Full Application
 Run Docker Compose to build and launch all services (backend, frontend, database, and microservices):
-'''bash
-docker compose up --build
-'''
-
+```bash
+docker-compose up
+```
+---
 4️⃣ Access the Services:
 
 🚀 FastAPI Backend → http://localhost:8000
