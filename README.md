@@ -1,69 +1,77 @@
-🐾 Pawfect Planner
+# 🐾 Pawfect Planner
 
 <div align="center">
-  <img src="frontend/public/EntryBackground.png" alt="Pawfect Planner Logo" width="70%">
+  <img src="frontend/public/EntryBackground.png" alt="Pawfect Planner Logo" width="50%">
 
   [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
   [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org)
   [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
   [![Gemini AI](https://img.shields.io/badge/Gemini-AI-blue?style=for-the-badge&logo=google&logoColor=white)](https://gemini.google.com/chat)
   [![The Dog API](https://img.shields.io/badge/The%20Dog%20API-🐶-blue?style=for-the-badge)](https://thedogapi.com/)
+
+  **A microservices-based pet management solution powered by AI and modular architecture.**
 </div>
 
-**A microservices-based pet management solution powered by AI and modular architecture.**
+---
 
-🎥 **Demo**
-📽️ Coming soon!
+## 🎥 Demo
+📽️ *Coming soon!*
 
-📌 **Features**
-🔹 **Backend**
-✅ **Pet Profiles** 🐶🐱 – Manage detailed pet profiles, including breed, age, weight, behavior issues, and health history.
-✅ **Vaccination Tracking** 💉 – Store vaccination records and upcoming vaccinations.
-✅ **Reminders** ⏰ – Set and manage reminders for vet visits, vaccinations, and medications.
-✅ **ICS Calendar Export** 📅 – Export reminders to .ics files for Google Calendar, Outlook, etc.
-✅ **Dynamic Breed Information** 🔍 – Fetch breed-related data from external APIs (The Dog API, The Cat API).
-✅ **Local Vet Search** 🏥 – Locate nearby veterinary clinics using Google Maps.
-✅ **Secure Authentication** 🔐 – Implements JWT authentication and user authorization.
-✅ **Microservices Architecture** 🏗️ – Modular services (LLM [Google Gemini], PDF export of pet profiles, ICS reminders).
-🔹 **Frontend**
-✅ **React-based UI** 🎨 – A clean, user-friendly interface for pet data management.
-✅ **Interactive Reminders & Notifications** 🔔 – Auto-renewing reminders (ICS files) to prevent missing treatments.
+---
 
-🛠️ Technologies Used
-Backend
+## 📌 Features
 
-🚀 FastAPI (Python 3.12) – High-performance API framework.
-🗄 PostgreSQL – Relational database for secure pet data storage.
-📡 SQLAlchemy – ORM for database interactions.
-🔑 JWT Authentication – Secure user authentication.
-📅 ICS Library – Export reminders as .ics calendar files.
-📄 Data to PDF Service – Convert pet data into downloadable PDFs.
-🐶 The Dog API & The Cat API – Fetch breed-related health and behavior data.
-🤖 LLM - Gemini AI – Provides pet advice and fills missing API data.
-🐳 Docker & Docker Compose – Fully containerized for easy deployment.
+### 🔹 Backend
+- ✅ **Pet Profiles** 🐶🐱 – Manage pet profiles, including breed, age, weight, behavior issues, and health history.
+- ✅ **Vaccination Tracking** 💉 – Store vaccination records and upcoming vaccinations.
+- ✅ **Reminders** ⏰ – Set and manage reminders for vet visits, vaccinations, and medications.
+- ✅ **ICS Calendar Export** 📅 – Export reminders to `.ics` files for Google Calendar, Outlook, etc.
+- ✅ **Dynamic Breed Information** 🔍 – Fetch breed-related data from external APIs ([The Dog API](https://thedogapi.com/), [The Cat API](https://thecatapi.com/)).
+- ✅ **Local Vet Search** 🏥 – Locate nearby veterinary clinics using Google Maps.
+- ✅ **Secure Authentication** 🔐 – Implements JWT authentication and user authorization.
+- ✅ **Microservices Architecture** 🏗️ – Modular services (LLM [Google Gemini], PDF export, ICS reminders).
 
-Frontend
+### 🔹 Frontend
+- ✅ **React-based UI** 🎨 – A clean, user-friendly interface for pet data management.
+- ✅ **Interactive Reminders & Notifications** 🔔 – Auto-renewing reminders (ICS files) to prevent missing treatments.
 
-⚡ React + Vite – Fast UI framework for single-page applications.
-🏛 React Router – Enables navigation between pages.
-🎛 Redux/Zustand – Manages application state efficiently.
-🎨 Styled Components / Tailwind CSS – Modern styling techniques.
-🔄 Axios – Handles API requests seamlessly.
+---
 
+## 🛠️ Technologies Used
 
-⚙️ Prerequisites
-Ensure you have:
-✅ Docker installed.
-✅ Docker Compose installed.
-✅ Python 3.12 (for local development).
+### Backend
+- 🚀 **FastAPI (Python 3.12)** – High-performance API framework.
+- 🗄 **PostgreSQL** – Relational database for secure pet data storage.
+- 📡 **SQLAlchemy** – ORM for database interactions.
+- 🔑 **JWT Authentication** – Secure user authentication.
+- 📅 **ICS Library** – Export reminders as `.ics` calendar files.
+- 📄 **Data to PDF Service** – Convert pet data into downloadable PDFs.
+- 🐶 **The Dog API & The Cat API** – Fetch breed-related health and behavior data.
+- 🤖 **LLM - Gemini AI** – Provides pet advice and fills missing API data.
+- 🐳 **Docker & Docker Compose** – Fully containerized for easy deployment.
 
-🚀 Installation and Setup
-1️⃣ Clone the Repository
-'''bash
+### Frontend
+- ⚡ **React + Vite** – Fast UI framework for single-page applications.
+- 🏛 **React Router** – Enables navigation between pages.
+- 🎛 **Redux/Zustand** – Manages application state efficiently.
+- 🎨 **Styled Components / Tailwind CSS** – Modern styling techniques.
+- 🔄 **Axios** – Handles API requests seamlessly.
+
+---
+
+## ⚙️ Prerequisites
+- ✅ Docker installed.
+- ✅ Docker Compose installed.
+- ✅ Python 3.12 (for local development).
+
+---
+
+## 🚀 Installation and Setup
+
+### 1️⃣ Clone the Repository
+```bash
 git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
 cd PawfectPlanner
-'''
-
 2️⃣ Set Up Environment Variables
 Create a .env file at the root directory:
 '''bashecho 'POSTGRES_USER=postgres
