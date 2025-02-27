@@ -8,9 +8,9 @@
   [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
   [![Gemini AI](https://img.shields.io/badge/Gemini-AI-blue?style=for-the-badge&logo=google&logoColor=white)](https://gemini.google.com/chat)
   [![The Dog API](https://img.shields.io/badge/The%20Dog%20API-🐶-blue?style=for-the-badge)](https://thedogapi.com/)
-
-    **A microservices-based pet management solution powered by AI and modular architecture.**
 </div>
+
+**A microservices-based pet management solution powered by AI and modular architecture.**
 
 🎥 Demo
 📽️ Coming soon!
