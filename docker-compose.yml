@@ -1,8 +1,12 @@
+version: "3.8"
+
 services:
   db:
     image: postgres:15
     container_name: pawfect-planner-db
     restart: always
+    env_file:
+      - .env  # ✅ Loads environment variables from .env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -19,9 +23,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: pawfect-planner-backend
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      DOG_API_KEY: ${DOG_API_KEY}
+    env_file:
+      - .env  # ✅ Ensures DATABASE_URL and DOG_API_KEY load correctly
     ports:
       - "8000:8000"
     volumes:
@@ -33,11 +36,11 @@ services:
 
   gemini-service:
     build:
-      context: ./backend  # No need to install dependencies again
+      context: ./backend
       dockerfile: gemini-service/Dockerfile
     container_name: gemini-service
-    environment:
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    env_file:
+      - .env  # ✅ Ensures GEMINI_API_KEY loads correctly
     ports:
       - "5000:5000"
     volumes:
@@ -53,7 +56,7 @@ services:
       dockerfile: Dockerfile
     container_name: pawfect-planner-frontend
     ports:
-      - "3000:3000"
+      - "3000:80"  # ✅ Corrects mapping (3000 -> 80 for Nginx)
     volumes:
       - ./frontend:/app
     depends_on:

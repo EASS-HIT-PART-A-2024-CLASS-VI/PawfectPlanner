@@ -9,8 +9,8 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Use environment variable for API URL
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api/auth";
+  // ✅ Remove reliance on .env and set correct API path
+  const API_URL = "http://pawfect-planner-backend:8000/api/auth";
 
   const handleSignup = async (e) => {
     e.preventDefault();

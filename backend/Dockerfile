@@ -1,31 +1,25 @@
-# Use the latest Python version
+# Use a lightweight Python image
 FROM python:3.12-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+# Install required system dependencies
+RUN apt-get update && apt-get install -y gcc libpq-dev && apt-get clean
 
 # Copy the requirements file into the container
-COPY requirements.txt .
+COPY requirements.txt /app/requirements.txt
 
-# Upgrade pip and install dependencies
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies, ensuring `uvicorn` and `python-multipart` are included
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r /app/requirements.txt && \
+    pip install --no-cache-dir uvicorn python-multipart
 
-# Copy the rest of the application code
-COPY . .
+# Copy the entire backend code
+COPY . /app
 
-# Ensure the entrypoint command has correct permissions
-RUN chmod +x /app
-
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Ensure Uvicorn runs properly
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

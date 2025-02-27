@@ -1,20 +1,21 @@
-# Use the same Python base image
+# Use a lightweight Python image
 FROM python:3.12-slim
 
 # Set the working directory
 WORKDIR /app
 
-# Install system dependencies (minimal)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Add the app directory to PYTHONPATH
+ENV PYTHONPATH=/app
 
-# Copy only the application code (no need to copy requirements.txt)
-COPY gemini-service/ .  
+# Copy the requirements file and install dependencies
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# Expose the application port
+# Copy the application code
+COPY . /app
+
+# Expose the microservice port
 EXPOSE 5000
 
-# Run the service
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "5000"]
+# Command to run the FastAPI app
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000"]
