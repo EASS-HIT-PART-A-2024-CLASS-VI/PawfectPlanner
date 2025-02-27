@@ -23,7 +23,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000); // Simulate loading delay
+    setTimeout(() => setLoading(false), 1000);
   }, []);
 
   return loading ? (
@@ -33,16 +33,19 @@ function App() {
   ) : (
     <AuthProvider>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<PrivateRoute><PetProfile /></PrivateRoute>} />
-        <Route path="/reminders" element={<PrivateRoute><Reminders /></PrivateRoute>} />
-        <Route path="/treatments" element={<PrivateRoute><Treatments /></PrivateRoute>} />
-        <Route path="/vet-locator" element={<PrivateRoute><VetLocator /></PrivateRoute>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<PrivateRoute><PetProfile /></PrivateRoute>} />
+          <Route path="/reminders" element={<PrivateRoute><Reminders /></PrivateRoute>} />
+          <Route path="/treatments" element={<PrivateRoute><Treatments /></PrivateRoute>} />
+          <Route path="/vet-locator" element={<PrivateRoute><VetLocator /></PrivateRoute>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
     </AuthProvider>
   );
 }

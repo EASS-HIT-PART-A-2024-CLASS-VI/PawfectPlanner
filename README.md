@@ -1,129 +1,103 @@
-# 🐾 Pawfect Planner  
+🐾 Pawfect Planner
 
-![alt text](image.png)
+![Happy Pet](frontend/public/EntryBackground.png)
 
-A **micro-services** based pet management application designed to help pet owners **organize pet care, track vaccinations, set reminders**, and more.  
-The project includes:  
-- A **FastAPI-based backend** for pet data management.  
-- A **React-based frontend** (currently in development).  
-- **Microservices for modular functionality** (e.g., Gemini API integration).  
-- **Docker support** for seamless deployment.
+<div align="center">
+  <img src="frontend/src/static/images/pawfect_planner_logo.png" alt="Pawfect Planner Logo" width="50%">
 
----
+  **A microservices-based pet management solution powered by AI and modular architecture.**
 
-## 📌 Features
-### 🔹 Backend
-- **Pet Profiles** 🐶🐱: Manage detailed pet profiles with breed, age, weight, and health history.
-- **Vaccination Tracking 💉**: Store vaccination records and upcoming vaccinations.
-- **Reminders ⏰**: Set and manage reminders for vet visits, vaccinations, and medication schedules.
-- **Health Check API 🏥**: Provides basic health-related insights via APIs.
-- **ICS Calendar Export 📅**: Export reminders to `.ics` files for Google Calendar, Outlook, etc.
-- **Dynamic Breed Information 🔍**: Fetch breed-related data from external APIs.
-- **Local Vet Search 🏥**: Locate nearby veterinary clinics using Google Maps.
-- **Security 🔐**: Implements secure authentication using JWT and bcrypt.
-- **Microservices Architecture 🏗️**: Modular services for scalability and maintainability.
-- **Dockerized 🐳**: Fully containerized for easy deployment.
+  [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org)
+  [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+  [![Gemini AI](https://img.shields.io/badge/Gemini-AI-blue?style=for-the-badge&logo=google&logoColor=white)](https://gemini.google.com/chat)
+  [![The Dog API](https://img.shields.io/badge/The%20Dog%20API-🐶-blue?style=for-the-badge)](https://thedogapi.com/)
+</div>
 
-### 🔹 Frontend (Work in Progress)
-- **React-based UI 🎨**: A clean, user-friendly interface for managing pet data.
-- **Interactive Reminders & Notifications 🔔**: reminders (ics files) will automatically renew, so you will never miss a treatment nor a vaccine again.
+🎥 Demo
+📽️ Coming soon!
 
----
+📌 Features
+🔹 Backend
+✅ Pet Profiles 🐶🐱 – Manage detailed pet profiles, including breed, age, weight, behavior issues, and health history.
+✅ Vaccination Tracking 💉 – Store vaccination records and upcoming vaccinations.
+✅ Reminders ⏰ – Set and manage reminders for vet visits, vaccinations, and medications.
+✅ ICS Calendar Export 📅 – Export reminders to .ics files for Google Calendar, Outlook, etc.
+✅ Dynamic Breed Information 🔍 – Fetch breed-related data from external APIs (The Dog API, The Cat API).
+✅ Local Vet Search 🏥 – Locate nearby veterinary clinics using Google Maps.
+✅ Secure Authentication 🔐 – Implements JWT authentication and user authorization.
+✅ Microservices Architecture 🏗️ – Modular services (LLM [Google Gemini], PDF export of pet profiles, ICS reminders).
+🔹 Frontend
+✅ React-based UI 🎨 – A clean, user-friendly interface for pet data management.
+✅ Interactive Reminders & Notifications 🔔 – Auto-renewing reminders (ICS files) to prevent missing treatments.
 
-## 🛠️ Technologies Used
-### Backend
-- **FastAPI** (Python 3.12) - High-performance web framework for API development.
-- **PostgreSQL** - Relational database for storing pet data securely.
-- **SQLAlchemy** - ORM for database management.
-- **bcrypt** - Secure password hashing.
-- **Pydantic** - Data validation and serialization.
-- **HTTPX** - Making external API requests.
-- **Redis** (Optional) - Caching and session management.
-- **ICS Library** - Export reminders to calendar-compatible formats.
-- **Docker & Docker Compose** - Containerized environment for deployment.
+🛠️ Technologies Used
+Backend
 
-### Frontend (Upcoming)
-- **React** - User-friendly, responsive UI.
-- **React Router** - For navigation.
-- **Redux (or Zustand)** - State management.
-- **Tailwind CSS** - Modern styling framework.
+🚀 FastAPI (Python 3.12) – High-performance API framework.
+🗄 PostgreSQL – Relational database for secure pet data storage.
+📡 SQLAlchemy – ORM for database interactions.
+🔑 JWT Authentication – Secure user authentication.
+📅 ICS Library – Export reminders as .ics calendar files.
+📄 Data to PDF Service – Convert pet data into downloadable PDFs.
+🐶 The Dog API & The Cat API – Fetch breed-related health and behavior data.
+🤖 LLM - Gemini AI – Provides pet advice and fills missing API data.
+🐳 Docker & Docker Compose – Fully containerized for easy deployment.
 
----
+Frontend
 
-## ⚙️ Prerequisites
-To run the project, ensure you have:
+⚡ React + Vite – Fast UI framework for single-page applications.
+🏛 React Router – Enables navigation between pages.
+🎛 Redux/Zustand – Manages application state efficiently.
+🎨 Styled Components / Tailwind CSS – Modern styling techniques.
+🔄 Axios – Handles API requests seamlessly.
 
-- **[Docker](https://docs.docker.com/get-docker/)** installed.
-- **[Docker Compose](https://docs.docker.com/compose/install/)** installed.
-- (For local development) **Python 3.12** installed.
 
----
+⚙️ Prerequisites
+Ensure you have:
+✅ Docker installed.
+✅ Docker Compose installed.
+✅ Python 3.12 (for local development).
 
-## 🚀 Installation and Setup
-
-### 1️⃣ Clone the Repository
-```bash
+🚀 Installation and Setup
+1️⃣ Clone the Repository
 git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
 cd PawfectPlanner
 
-# 🐾 Pawfect Planner
+2️⃣ Set Up Environment Variables
+Create a .env file at the root directory:
+echo 'POSTGRES_USER=postgres
+POSTGRES_PASSWORD=DB4PawfectPlanner
+POSTGRES_DB=pets_db
+DATABASE_URL=postgresql://postgres:DB4PawfectPlanner@db:5432/pets_db
+#All PostgreSQL .env are public, feel free to use them or replace with your own.
+GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>
+DOG_API_KEY=<YOUR_DOG_API_KEY>' > .env
 
-A microservices-based pet care application.
+💡 Note: Replace <YOUR_GEMINI_API_KEY> and <YOUR_DOG_API_KEY> with valid API keys.
+Need an API key? follow links and instructions here <https://ai.google.dev/gemini-api/docs/api-key> for Gemini API KEY, and here <https://www.thedogapi.com/> for The Dog API key (works for The Cat API as well)
 
-## 2️⃣ Set Up Environment Variables
+🐳 Running the Project with Docker
+3️⃣ Start the Full Application
+Run Docker Compose to build and launch all services (backend, frontend, database, and microservices):
+docker compose up --build
 
-Before running the project, you need to configure environment variables.
+4️⃣ Access the Services:
 
-1. Create a `.env` file in the **root directory**.
-2. Add the following:
+🚀 FastAPI Backend → http://localhost:8000
+📑 API Docs (Swagger UI) → http://localhost:8000/docs
+🎨 Frontend UI (React) → http://localhost:3000 (or next available port if 3000 is taken)
 
-   ```plaintext
-   DATABASE_URL=postgresql://postgres:password@db:5432/pawfectplanner
-   SECRET_KEY=your-secret-key
-   ACCESS_TOKEN_EXPIRE_MINUTES=60
-   GEMINI_API_KEY=your-gemini-api-key
-   ```
 
-   - **`DATABASE_URL`** - Connection string for PostgreSQL.
-   - **`SECRET_KEY`** - Used for JWT authentication (choose a secure key).
-   - **`ACCESS_TOKEN_EXPIRE_MINUTES`** - Token expiration time (default: 60 minutes).
-   - **`GEMINI_API_KEY`** - API Key for Gemini integration.
-
-   Replace the placeholder values with your actual credentials.
-
-## 🐳 Running the Project with Docker
-
-### Start the Full Application
-
-Use **Docker Compose** to run all services, including the backend, database, and external API integrations.
-
-Build and start the containers:
-
-```bash
-docker-compose up --build
-```
-
-### Access the Backend API:
-
-- **FastAPI Server:** [`http://localhost:8000`](http://localhost:8000)
-- **Swagger API Documentation (Auto-Generated):** [`http://localhost:8000/docs`](http://localhost:8000/docs)
-- **ReDoc API Docs:** [`http://localhost:8000/redoc`](http://localhost:8000/redoc)
-
-### (Upcoming) Frontend UI:
-
-- **React Frontend (Planned):** [`http://localhost:3000`](http://localhost:3000)
-
-## 🗄️ Project Structure
-
-This project follows a **modular microservices approach** with separate directories for the backend, frontend, and services.
-
-```
+🗄️ Project Structure
 PawfectPlanner/
 ├── backend/
 │   ├── app/
 │   │   ├── routes/
+│   │   │   ├── auth.py
 │   │   │   ├── breeds.py
 │   │   │   ├── healthcheck.py
+│   │   │   ├── ics_generator.py
 │   │   │   ├── pets.py
 │   │   │   ├── reminders.py
 │   │   │   ├── treatments.py
@@ -131,57 +105,64 @@ PawfectPlanner/
 │   │   ├── vaccines/
 │   │   │   ├── cat_vaccines.json
 │   │   │   ├── dog_vaccines.json
-│   │   │   └── vaccines.py
-│   │   ├── auth.py
+│   │   │   ├── vaccines.py
 │   │   ├── database.py
 │   │   ├── main.py
 │   │   ├── models.py
 │   │   ├── schemas.py
 │   │   ├── security.py
 │   │   ├── util.py
-│   ├── docker-compose.yml
+│   ├── gemini-service/
+│   │   ├── Dockerfile
+│   │   ├── app.py
+│   │   ├── gemini_api_helper.py
+│   │   ├── query_gemini.py
 │   ├── Dockerfile
 │   ├── requirements.txt
-│   └── README.md
-├── frontend/ (Upcoming)
+│   ├── README.md
+├── frontend/
 │   ├── src/
+│   │   ├── api/
 │   │   ├── components/
 │   │   ├── pages/
 │   │   ├── services/
+│   │   ├── styles/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   ├── Dockerfile
 │   ├── package.json
-│   ├── vite.config.js
-│   ├── README.md
 ├── docker-compose.yml
 └── README.md
-```
 
-### 📌 Key Directories:
-
-- **`backend/app/routes/`** → Contains all API endpoints.
-- **`backend/app/vaccines/`** → Stores JSON data for vaccination schedules.
-- **`backend/app/models.py`** → Defines database models using SQLAlchemy.
-- **`backend/app/main.py`** → The entry point for FastAPI.
-- **`frontend/src/`** → (Upcoming) Will contain React components for UI.
-
-## ✅ Running Tests
-
-To ensure the project runs correctly, use `pytest` to test the backend.
-
-### Run tests locally:
-
-```bash
+✅ Running Tests
+Run Locally:
 pytest
-```
 
-### Run tests inside the Docker container:
-
-```bash
+Run Inside Docker:
 docker exec -it pawfect-planner_app_1 pytest
-```
 
-## 🛠️ Development Notes
+🆘 Troubleshooting
+1️⃣ Reset & Rebuild Everything
+docker compose down --rmi all --volumes --remove-orphans
+docker compose up --build
 
-- All dependencies are listed in `requirements.txt`.
-- The **backend API** is fully functional, while the **frontend UI** is under development.
-- For API testing, use **Swagger UI**: [`http://localhost:8000/docs`](http://localhost:8000/docs).
-- The **Pawfect Planner** is designed with **scalability** in mind, supporting future features like AI-driven pet advice.
+2️⃣ Reset Frontend
+cd frontend
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
+npm run dev
+
+3️⃣ Reset Backend (Python Virtual Environment)
+cd backend
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+
+
+🎉 Get Started with Pawfect Planner!
+🚀 Ready to manage your pet’s care effortlessly?
+📢 Join Pawfect Planner today and make pet management hassle-free! 🐾
+📧 Contact: barnir16@gmail.com

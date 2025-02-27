@@ -1,24 +1,25 @@
-# Step 1: Build the React frontend
+# Step 1: Build React frontend
 FROM node:18-alpine AS build
 
 WORKDIR /app
-
 COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
-
-# Build the app
 RUN npm run build
 
 # Step 2: Serve with Nginx
 FROM nginx:alpine
 
-# Copy build output to Nginx directory
+# Copy built frontend to Nginx HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80 inside the container (will be mapped to 3000 in docker-compose)
-EXPOSE 80
+# Copy custom Nginx config for SPA routing
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Start Nginx
+# Create an empty favicon to prevent errors
+RUN echo "" > /usr/share/nginx/html/favicon.ico
+
+# Expose port 80 for frontend
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,59 +1,47 @@
+// src/pages/Signup.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../styles/Auth.css";
+import { API_BASE_URL } from "../config";
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  // ✅ Remove reliance on .env and set correct API path
-  const API_URL = "http://pawfect-planner-backend:8000/api/auth";
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
-
     try {
-      const response = await axios.post(`${API_URL}/register`, {
-        email,
-        password,
-      });
-
-      console.log("Signup Success:", response.data);
-      navigate("/login"); // Redirect to login after successful registration
+      await axios.post(`${API_BASE_URL}/auth/signup`, formData);
+      alert("Signup successful!");
+      navigate("/dashboard");
     } catch (err) {
-      console.error("Signup Error:", err.response?.data || err.message);
-      setError(err.response?.data?.detail || "Signup failed. Try a different email.");
+      console.error("Signup error:", err);
+      setError("Signup failed.");
     }
   };
 
   return (
-    <div className="auth-container">
+    <div>
       <h2>Sign Up</h2>
-      {error && <p className="error">{error}</p>}
       <form onSubmit={handleSignup}>
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Username"
+          value={formData.username}
+          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
           required
         />
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           required
         />
         <button type="submit">Sign Up</button>
       </form>
-      <p>
-        Already have an account? <a href="/login">Log in</a>
-      </p>
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

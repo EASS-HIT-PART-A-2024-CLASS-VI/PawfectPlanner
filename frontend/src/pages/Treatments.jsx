@@ -75,15 +75,20 @@ const preventativeTreatments = {
   ],
 };
 
+// **Fix ICS File Formatting**
 const generateICS = (treatment) => {
+  const startDate = new Date();
+  const formattedDate = startDate.toISOString().split("T")[0].replace(/-/g, "");
+  
   const event = `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
 SUMMARY:${treatment.name} Treatment
 DESCRIPTION:${treatment.description} - Frequency: ${treatment.frequency}
-DTSTART:${new Date().toISOString().split("T")[0].replace(/-/g, "")}T120000Z
+DTSTART:${formattedDate}T120000Z
 END:VEVENT
 END:VCALENDAR`;
+
   const blob = new Blob([event], { type: "text/calendar;charset=utf-8" });
   saveAs(blob, `${treatment.name.replace(/\s/g, "_")}.ics`);
 };
@@ -107,7 +112,7 @@ function Treatments() {
             <strong>{vaccine.name}</strong> ({vaccine.frequency}){" "}
             {vaccine.mandatory && <span className="mandatory">Mandatory</span>}
             <p>{vaccine.description}</p>
-            <button onClick={() => generateICS(vaccine)}>Download ICS</button>
+            <button className="download-btn" onClick={() => generateICS(vaccine)}>Download ICS</button>
           </li>
         ))}
       </ul>
@@ -118,7 +123,7 @@ function Treatments() {
           <li key={treatment.name} className="treatment-item">
             <strong>{treatment.name}</strong> ({treatment.frequency})
             <p>{treatment.description}</p>
-            <button onClick={() => generateICS(treatment)}>Download ICS</button>
+            <button className="download-btn" onClick={() => generateICS(treatment)}>Download ICS</button>
           </li>
         ))}
       </ul>

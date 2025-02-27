@@ -10,3 +10,5 @@ httpx  # Async HTTP requests
 redis  # Redis support for caching/session storage
 ics  # iCalendar file handling
 email-validator  # Email validation
+python-multipart # files download/upload between program and user
+requests  # HTTP requests

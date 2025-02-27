@@ -1,64 +1,41 @@
-.pet-profile-container {
-  background: #F5DEB3;
+.pet-profile {
   padding: 20px;
+  background-color: #f5f5dc; /* Light beige */
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 90%;
-  max-width: 600px;
-  margin: auto;
+  text-align: center;
 }
 
-.pet-profile-title {
-  color: #5A3E36;
-  font-size: 1.5rem;
+.breed-info {
+  margin-top: 15px;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.warning {
+  color: red;
   font-weight: bold;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  max-width: 500px;
-}
-
-input, select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-.health-issues-list, .behavior-issues-list {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-.health-issue-item, .behavior-issue-item {
-  background: #eee;
-  padding: 5px;
-  margin: 3px 0;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 button {
-  background-color: #4682B4;
-  padding: 10px;
+  padding: 10px 15px;
+  margin: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
+}
+
+button.download-pdf {
+  background-color: #007bff;
+  color: white;
+}
+
+button.delete-button {
+  background-color: #ff4444;
   color: white;
 }
 
 button:hover {
-  background-color: #315A89;
+  opacity: 0.8;
 }

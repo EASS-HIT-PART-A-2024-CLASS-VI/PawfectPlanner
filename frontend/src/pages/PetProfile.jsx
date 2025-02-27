@@ -1,98 +1,106 @@
-import React, { useState, useEffect } from "react";
-import "../styles/PetProfile.css";
+// src/pages/PetProfile.jsx
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_BASE_URL } from "../config";
+import { generatePetPDF } from "../utils/generatePDF";
+import "./styles/PetProfile.css";
 
 const PetProfile = () => {
-  const [name, setName] = useState("");
-  const [type, setType] = useState("Dog");
-  const [breed, setBreed] = useState("");
-  const [breedOptions, setBreedOptions] = useState([]);
-  const [age, setAge] = useState("");
-  const [weight, setWeight] = useState("");
-  const [healthIssues, setHealthIssues] = useState([]);
-  const [behaviorIssues, setBehaviorIssues] = useState([]);
-  const [issueInput, setIssueInput] = useState("");
-  const [behaviorInput, setBehaviorInput] = useState("");
+  const { petId } = useParams();
+  const navigate = useNavigate();
+  const [pet, setPet] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    fetch(`/api/breeds?type=${type}`)
-      .then((res) => res.json())
-      .then((data) => setBreedOptions(data))
-      .catch((err) => console.error("Error fetching breeds:", err));
-  }, [type]);
+    axios
+      .get(`${API_BASE_URL}/pets/${petId}`)
+      .then((response) => {
+        setPet(response.data);
+        setFormData(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching pet:", err);
+        setError("Failed to load pet details.");
+        setLoading(false);
+      });
+  }, [petId]);
 
-  const addHealthIssue = () => {
-    if (issueInput) {
-      setHealthIssues([...healthIssues, issueInput]);
-      setIssueInput("");
-    }
+  const handleEdit = () => {
+    axios
+      .put(`${API_BASE_URL}/pets/${petId}`, formData)
+      .then((response) => {
+        setPet(response.data);
+        setEditMode(false);
+      })
+      .catch((err) => {
+        console.error("Error updating pet:", err);
+      });
   };
 
-  const addBehaviorIssue = () => {
-    if (behaviorInput) {
-      setBehaviorIssues([...behaviorIssues, behaviorInput]);
-      setBehaviorInput("");
-    }
+  const handleDelete = () => {
+    axios
+      .delete(`${API_BASE_URL}/pets/${petId}`)
+      .then(() => {
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        console.error("Error deleting pet:", err);
+      });
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <div className="pet-profile-container">
-      <h2 className="pet-profile-title">Enter Pet Profile</h2>
+    <div className="pet-profile">
+      <h2>{pet.name}'s Profile</h2>
+      <p>Breed: {pet.breed}</p>
 
-      <div className="form-group">
-        <label>Pet Name:</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-      </div>
+      {pet.breed_info && (
+        <div className="breed-info">
+          <p><strong>Life Expectancy:</strong> {pet.breed_info.life_expectancy}</p>
+          <p><strong>Temperament:</strong> {pet.breed_info.temperament}</p>
+          <p><strong>Known Health Issues:</strong> {pet.breed_info.health_issues}</p>
+          <p>
+            <strong>Weight:</strong> {pet.weight} kg
+            {pet.breed_info.average_weight && (
+              <span> (Recommended: {pet.breed_info.average_weight} kg)</span>
+            )}
+          </p>
+          {pet.weight &&
+            pet.breed_info.average_weight &&
+            (pet.weight > parseFloat(pet.breed_info.average_weight) * 1.2 ||
+              pet.weight < parseFloat(pet.breed_info.average_weight) * 0.8) && (
+              <p className="warning">⚠️ {pet.name} is outside the recommended weight range!</p>
+            )}
+        </div>
+      )}
 
-      <div className="form-group">
-        <label>Pet Type:</label>
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="Dog">Dog</option>
-          <option value="Cat">Cat</option>
-        </select>
-      </div>
+      {editMode ? (
+        <div className="edit-form">
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <input
+            type="number"
+            value={formData.weight}
+            onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+          />
+          <button onClick={handleEdit}>Save</button>
+        </div>
+      ) : (
+        <button onClick={() => setEditMode(true)}>Edit</button>
+      )}
 
-      <div className="form-group">
-        <label>Breed:</label>
-        <select value={breed} onChange={(e) => setBreed(e.target.value)}>
-          {breedOptions.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>Age (years):</label>
-        <input type="number" value={age} onChange={(e) => setAge(e.target.value)} />
-      </div>
-
-      <div className="form-group">
-        <label>Weight (kg):</label>
-        <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
-      </div>
-
-      <div className="form-group">
-        <label>Health Issues:</label>
-        <input type="text" value={issueInput} onChange={(e) => setIssueInput(e.target.value)} />
-        <button onClick={addHealthIssue}>Add</button>
-        <ul className="health-issues-list">
-          {healthIssues.map((issue, index) => (
-            <li key={index} className="health-issue-item">{issue} ❌</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="form-group">
-        <label>Behavior Issues:</label>
-        <input type="text" value={behaviorInput} onChange={(e) => setBehaviorInput(e.target.value)} />
-        <button onClick={addBehaviorIssue}>Add</button>
-        <ul className="behavior-issues-list">
-          {behaviorIssues.map((issue, index) => (
-            <li key={index} className="behavior-issue-item">{issue} ❌</li>
-          ))}
-        </ul>
-      </div>
-
-      <button>Save Profile</button>
+      <button onClick={handleDelete} className="delete-button">Delete Pet</button>
+      <button onClick={() => generatePetPDF(pet)} className="download-pdf">Download Pet Profile</button>
     </div>
   );
 };

@@ -1,25 +1,21 @@
-# Use a lightweight Python image
+# Use a Python base image for the backend
 FROM python:3.12-slim
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Install required system dependencies
-RUN apt-get update && apt-get install -y gcc libpq-dev && apt-get clean
+# Copy requirements first to leverage caching
+COPY requirements.txt .
 
-# Copy the requirements file into the container
-COPY requirements.txt /app/requirements.txt
-
-# Install dependencies, ensuring `uvicorn` and `python-multipart` are included
+# Install dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r /app/requirements.txt && \
-    pip install --no-cache-dir uvicorn python-multipart
+    pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire backend code
-COPY . /app
+# Copy the rest of the backend code
+COPY . .
 
-# Expose the application port
+# Expose backend port
 EXPOSE 8000
 
-# Ensure Uvicorn runs properly
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Start FastAPI backend
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
