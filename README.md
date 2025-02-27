@@ -72,7 +72,7 @@
 ```bash
 git clone https://github.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner.git
 cd PawfectPlanner
-'''
+```
 ---
 2️⃣ Set Up Environment Variables
 Create a .env file at the root directory:
@@ -101,7 +101,8 @@ docker-compose up
 📑 API Docs (Swagger UI) → http://localhost:8000/docs
 🎨 Frontend UI (React) → http://localhost:3000 (or next available port if 3000 is taken)
 
-
+---
+'''bash
 🗄️ Project Structure
 PawfectPlanner/
 ├── backend/
@@ -147,7 +148,7 @@ PawfectPlanner/
 │   ├── package.json
 ├── docker-compose.yml
 └── README.md
-
+'''
 ✅ Running Tests
 Run Locally:
 pytest
