@@ -1,7 +1,7 @@
 🐾 Pawfect Planner
 
 <div align="center">
-  ![Pawfect Planner](https://raw.githubusercontent.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner/main/frontend/public/EntryBackground.png)
+  (https://raw.githubusercontent.com/EASS-HIT-PART-A-2024-CLASS-VI/PawfectPlanner/main/frontend/public/EntryBackground.png)
 
   **A microservices-based pet management solution powered by AI and modular architecture.**
 
