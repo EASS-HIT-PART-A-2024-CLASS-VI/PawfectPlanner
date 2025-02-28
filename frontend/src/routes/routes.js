@@ -1,17 +1,21 @@
 // src/routes.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import Dashboard from "./pages/Dashboard";
+import PetProfile from "./pages/PetProfile";
 
-const Routes = () => (
+const AppRoutes = () => (
   <Router>
-    <Switch>
-      <Route exact path="/" component={HomePage} />
-      <Route path="/about" component={AboutPage} />
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/pets/:petId" element={<PetProfile />} />
       {/* Add more routes as needed */}
-    </Switch>
+    </Routes>
   </Router>
 );
 
-export default Routes;
+export default AppRoutes;

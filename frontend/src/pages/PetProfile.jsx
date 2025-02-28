@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 import { generatePetPDF } from "../utils/generatePDF";
-import "./styles/PetProfile.css";
+import "../styles/PetProfile.css";
 
 const PetProfile = () => {
   const { petId } = useParams();
@@ -16,6 +16,12 @@ const PetProfile = () => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
+    if (!petId || petId === "undefined") {
+      setError("Invalid pet ID.");
+      setLoading(false);
+      return;
+    }
+
     axios
       .get(`${API_BASE_URL}/pets/${petId}`)
       .then((response) => {
@@ -54,18 +60,18 @@ const PetProfile = () => {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="pet-profile">
       <h2>{pet.name}'s Profile</h2>
-      <p>Breed: {pet.breed}</p>
+      <p><strong>Breed:</strong> {pet.breed}</p>
 
       {pet.breed_info && (
         <div className="breed-info">
-          <p><strong>Life Expectancy:</strong> {pet.breed_info.life_expectancy}</p>
-          <p><strong>Temperament:</strong> {pet.breed_info.temperament}</p>
-          <p><strong>Known Health Issues:</strong> {pet.breed_info.health_issues}</p>
+          <p><strong>Life Expectancy:</strong> {pet.breed_info.life_expectancy || "Unknown"}</p>
+          <p><strong>Temperament:</strong> {pet.breed_info.temperament || "Unknown"}</p>
+          <p><strong>Known Health Issues:</strong> {pet.breed_info.health_issues || "None"}</p>
           <p>
             <strong>Weight:</strong> {pet.weight} kg
             {pet.breed_info.average_weight && (
@@ -83,17 +89,22 @@ const PetProfile = () => {
 
       {editMode ? (
         <div className="edit-form">
+          <label>Pet Name:</label>
           <input
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
+          
+          <label>Weight (kg):</label>
           <input
             type="number"
             value={formData.weight}
             onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
           />
+
           <button onClick={handleEdit}>Save</button>
+          <button onClick={() => setEditMode(false)} className="cancel-button">Cancel</button>
         </div>
       ) : (
         <button onClick={() => setEditMode(true)}>Edit</button>

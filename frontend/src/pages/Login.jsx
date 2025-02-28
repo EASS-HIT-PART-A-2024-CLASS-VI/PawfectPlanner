@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Auth.css';
+import { API_BASE_URL } from "../config"; // Ensure proper import
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,13 +13,8 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // ✅ Ensure the correct backend URL (change `localhost:3002` to `localhost:8000`)
-      const response = await axios.post('http://localhost:8000/api/login', { email, password });
-
-      // ✅ Store token in localStorage
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       localStorage.setItem('token', response.data.access_token);
-      
-      // ✅ Redirect to dashboard or home page
       navigate('/dashboard');
     } catch (err) {
       setError('Invalid credentials. Try again.');

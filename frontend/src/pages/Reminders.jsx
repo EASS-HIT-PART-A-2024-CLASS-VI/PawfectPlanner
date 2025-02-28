@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FileSaver from "file-saver";
 import { API_BASE_URL } from "../config";
-import "./styles/Reminders.css";
+import "../styles/Reminders.css";
 
 const Reminders = () => {
   const [reminder, setReminder] = useState("");

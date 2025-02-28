@@ -1,18 +1,17 @@
-// src/pages/Signup.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE_URL}/auth/signup`, formData);
+      await axios.post(`${API_BASE_URL}/auth/register`, formData);
       alert("Signup successful!");
       navigate("/dashboard");
     } catch (err) {
@@ -26,10 +25,10 @@ const Signup = () => {
       <h2>Sign Up</h2>
       <form onSubmit={handleSignup}>
         <input
-          type="text"
-          placeholder="Username"
-          value={formData.username}
-          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           required
         />
         <input
