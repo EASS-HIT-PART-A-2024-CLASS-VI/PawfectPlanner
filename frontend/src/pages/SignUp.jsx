@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { API_BASE_URL } from "../config";
+import { signup } from "../services/authService";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -11,12 +10,27 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE_URL}/auth/register`, formData);
+      await signup(formData.email, formData.password);
       alert("Signup successful!");
       navigate("/dashboard");
     } catch (err) {
-      console.error("Signup error:", err);
-      setError("Signup failed.");
+      console.error("Signup error:", err.response || err);
+
+      // Show meaningful error messages
+      if (err.response) {
+        const status = err.response.status;
+        if (status === 400) {
+          setError("Email already registered. Try another.");
+        } else if (status === 422) {
+          setError("Invalid email format or missing password.");
+        } else if (status === 500) {
+          setError("Server error. Try again later.");
+        } else {
+          setError(err.response.data.detail || "Signup failed.");
+        }
+      } else {
+        setError("Network error. Check your connection.");
+      }
     }
   };
 

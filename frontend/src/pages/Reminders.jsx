@@ -58,6 +58,28 @@ const Reminders = () => {
     }
   };
 
+  const downloadICS = async (reminder) => {
+    try {
+      const params = new URLSearchParams({
+        title: reminder.reminder,
+        description: reminder.notes || "",
+        date: reminder.date,
+        frequency: reminder.repeat !== "Once" ? reminder.repeat : undefined,
+      });
+
+      const response = await axios.get(`${API_BASE_URL}/reminders/download?${params.toString()}`);
+      const data = response.data;
+
+      if (!data.content) throw new Error("ICS file generation failed");
+
+      const blob = new Blob([data.content], { type: "text/calendar" });
+      FileSaver.saveAs(blob, data.filename);
+    } catch (error) {
+      console.error("Failed to download ICS:", error);
+      alert("Error: Could not generate ICS file.");
+    }
+  };
+
   return (
     <div className="reminders-page">
       <h2>Pet Care Reminders</h2>
@@ -83,13 +105,16 @@ const Reminders = () => {
       <textarea placeholder="Notes (Optional)" value={notes} onChange={(e) => setNotes(e.target.value)} />
       <button onClick={addReminder}>Add Reminder</button>
 
-      {reminders.map((r, index) => (
-        <div key={index} className="reminder-item">
-          <p><b>{r.reminder}</b> - {r.date} at {r.time} ({r.repeat})</p>
-          {r.location && <p><b>Location:</b> {r.location}</p>}
-          {r.notes && <p><b>Notes:</b> {r.notes}</p>}
-        </div>
-      ))}
+      <div className="reminder-list">
+        {reminders.map((r, index) => (
+          <div key={index} className="reminder-item">
+            <p><b>{r.reminder}</b> - {r.date} at {r.time} ({r.repeat})</p>
+            {r.location && <p><b>Location:</b> {r.location}</p>}
+            {r.notes && <p><b>Notes:</b> {r.notes}</p>}
+            <button onClick={() => downloadICS(r)}>Download ICS</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

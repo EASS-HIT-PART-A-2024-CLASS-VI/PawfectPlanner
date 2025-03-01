@@ -24,7 +24,7 @@ app.add_middleware(
 Base.metadata.create_all(bind=engine)
 
 # ✅ Fix API prefixes
-app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
+app.include_router(auth_router, tags=["Auth"])  # 🔧 Remove prefix here
 app.include_router(pets_router, prefix="/api/pets", tags=["Pets"])
 app.include_router(reminders_router, prefix="/api/reminders", tags=["Reminders"])
 app.include_router(treatments_router, prefix="/api/treatments", tags=["Treatments"])

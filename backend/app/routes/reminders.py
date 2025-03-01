@@ -1,44 +1,58 @@
-from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
-from app.models import Reminder
-from app.schemas import ReminderCreate, ReminderUpdate, ReminderResponse
-from app.database import get_db
-import logging
-from ics import Calendar, Event
-import datetime
-import tempfile
-
-logger = logging.getLogger(__name__)
+from fastapi import APIRouter, HTTPException
+from icalendar import Calendar, Event
+from datetime import datetime, timedelta
+import pytz
+import uuid
 
 router = APIRouter()
 
-@router.post("/", response_model=ReminderResponse)
-def create_reminder(reminder: ReminderCreate, db: Session = Depends(get_db)):
+def generate_ics_event(title: str, description: str, date: str, frequency: str = None):
+    """
+    Generate an ICS file for reminders, ensuring compatibility with Outlook & mobile.
+    - `title`: Event title.
+    - `description`: Event details.
+    - `date`: Event start date (YYYY-MM-DD).
+    - `frequency`: Recurring frequency (e.g., "3 months" for vaccines).
+    """
     try:
-        db_reminder = Reminder(**reminder.dict())
-        db.add(db_reminder)
-        db.commit()
-        db.refresh(db_reminder)
-        return db_reminder
-    except SQLAlchemyError as e:
-        db.rollback()
-        logger.error(f"Error creating reminder: {str(e)}")
-        raise HTTPException(status_code=500, detail="Database error occurred.")
+        event_date = datetime.strptime(date, "%Y-%m-%d")
+        timezone = pytz.timezone("UTC")  # Ensure all timestamps use UTC
 
-@router.get("/{reminder_id}/export")
-def export_reminder_to_ics(reminder_id: int, db: Session = Depends(get_db)):
-    try:
-        reminder = db.query(Reminder).filter(Reminder.id == reminder_id).first()
-        if not reminder:
-            raise HTTPException(status_code=404, detail="Reminder not found")
+        cal = Calendar()
+        cal.add("VERSION", "2.0")
+        cal.add("PRODID", "-//PawfectPlanner//ICS Generator//EN")
 
-        ics_content = generate_ics(reminder)
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".ics") as temp_file:
-            temp_file.write(ics_content.encode("utf-8"))
-            temp_filepath = temp_file.name
+        event = Event()
+        event.add("SUMMARY", title)
+        event.add("DESCRIPTION", description)
+        event.add("DTSTART", event_date.replace(tzinfo=timezone))
+        event.add("DTEND", event_date.replace(tzinfo=timezone) + timedelta(hours=1))  # Default: 1-hour duration
+        event.add("DTSTAMP", datetime.now(timezone))
+        event.add("UID", f"{uuid.uuid4()}@pawfectplanner.com")
 
-        return {"message": "ICS file generated", "file_path": temp_filepath}
-    except SQLAlchemyError as e:
-        logger.error(f"Error exporting reminder to ICS: {str(e)}")
-        raise HTTPException(status_code=500, detail="Database error occurred.")
+        # **Add Recurrence Rule (RRULE) if frequency is provided**
+        if frequency:
+            freq_parts = frequency.split()
+            if len(freq_parts) == 2 and freq_parts[1].lower() in ["days", "weeks", "months", "years"]:
+                interval = freq_parts[0]
+                freq_map = {"days": "DAILY", "weeks": "WEEKLY", "months": "MONTHLY", "years": "YEARLY"}
+                event.add("RRULE", {"FREQ": freq_map[freq_parts[1]], "INTERVAL": interval})
+
+        cal.add_component(event)
+
+        return cal.to_ical()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating ICS: {str(e)}")
+
+@router.get("/reminders/download")
+def download_reminder(title: str, description: str, date: str, frequency: str = None):
+    """
+    API to generate an ICS reminder download.
+    - Example: `/reminders/download?title=Vet Visit&description=Annual checkup&date=2025-06-01`
+    - Supports recurrence: `/reminders/download?title=Worm Vaccine&date=2025-06-01&frequency=3 months`
+    """
+    ics_content = generate_ics_event(title, description, date, frequency)
+    return {
+        "filename": f"{title.replace(' ', '_')}.ics",
+        "content": ics_content.decode("utf-8"),
+    }
