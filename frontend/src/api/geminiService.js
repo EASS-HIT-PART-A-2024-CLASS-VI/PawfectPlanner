@@ -1,13 +1,21 @@
 // File: frontend/src/api/geminiService.js
+
 import axios from "axios";
-import { API_BASE_URL } from "../config";
+
+/**
+ * We skip API_BASE_URL for now, calling the Gemini container directly.
+ * If you prefer an Nginx reverse proxy, you can set that up. 
+ * But simplest is direct to http://localhost:5000
+ */
+
+const GEMINI_URL = "http://localhost:5000/gemini/query";
 
 /**
  * queryGemini: Basic usage to get a free-form answer
  */
 export async function queryGemini(prompt, pet = {}) {
   try {
-    const response = await axios.post(`${API_BASE_URL}/gemini/query`, {
+    const response = await axios.post(GEMINI_URL, {
       prompt,
       pet,
       forceJSON: false
@@ -30,27 +38,29 @@ export async function queryGeminiStrictJson(prompt, pet = {}) {
   if (initial.success) {
     return { success: true, data: initial.data };
   }
-  // If that fails, re-ask the model
+
   console.log("Gemini did not return valid JSON. Trying second attempt...");
-  const second = await attemptJson("You did not follow JSON format. Return strictly valid JSON only:\n" + prompt, pet);
+  const second = await attemptJson(
+    "You did not follow JSON format. Return strictly valid JSON only:\n" + prompt,
+    pet
+  );
   if (second.success) {
     return { success: true, data: second.data };
   }
+
   // If that fails again, user must fill manually
   return { success: false, error: "Gemini returned invalid JSON twice." };
 }
 
 async function attemptJson(prompt, pet) {
   try {
-    const response = await axios.post(`${API_BASE_URL}/gemini/query`, {
+    const response = await axios.post(GEMINI_URL, {
       prompt,
       pet,
       forceJSON: true
     });
     const text = response.data.answer || "";
-    // Attempt to parse
     const parsed = JSON.parse(text);
-    // If it parsed, we assume it matches the structure
     return { success: true, data: parsed };
   } catch (err) {
     console.warn("Attempt to parse Gemini JSON failed:", err);

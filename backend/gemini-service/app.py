@@ -2,11 +2,20 @@
 
 import os
 from fastapi import FastAPI, HTTPException, Body
+from fastapi.middleware.cors import CORSMiddleware
 from google import genai  # The official Google library
 from pydantic import BaseModel
-import json
 
 app = FastAPI()
+
+# Enable CORS so the front end at http://localhost:3000 can call this microservice at http://localhost:5000
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["http://localhost:3000"] if you want to restrict
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 if not GEMINI_API_KEY:
@@ -36,7 +45,7 @@ class GeminiRequest(BaseModel):
 @app.post("/gemini/query")
 async def query_gemini(data: GeminiRequest):
     """
-    A single endpoint to query Gemini via the google-genai library.
+    A single endpoint to query the Gemini LLM via the google-genai library.
 
     Request body:
     {
@@ -71,8 +80,8 @@ async def query_gemini(data: GeminiRequest):
         
 Respond ONLY in valid JSON with keys:
 { "weight": "...", "life_span": "...", "temperament": "...", "health_issues": "..." }
-No extra text, no explanations. 
-        """
+No extra text, no explanations.
+"""
 
     try:
         response = client.models.generate_content(
