@@ -1,3 +1,4 @@
+version: '3.9'
 services:
   db:
     image: postgres:15
@@ -38,7 +39,7 @@ services:
       dockerfile: gemini-service/Dockerfile
     container_name: gemini-service
     env_file:
-      - .env  # ✅ Ensures GEMINI_API_KEY loads correctly
+      - .env
     ports:
       - "5000:5000"
     volumes:
@@ -54,7 +55,7 @@ services:
       dockerfile: Dockerfile
     container_name: pawfect-planner-frontend
     ports:
-      - "3000:80"  # ✅ Corrects mapping (3000 -> 80 for Nginx)
+      - "3000:80"  # ✅ Mapping (3000 -> 80 for Nginx)
     volumes:
       - ./frontend:/app
     depends_on:

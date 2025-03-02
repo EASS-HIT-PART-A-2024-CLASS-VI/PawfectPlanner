@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Integer, Date, Float, ForeignKey
+# models.py
+from sqlalchemy import Column, String, Integer, DateTime, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -18,8 +19,8 @@ class Pet(Base):
     name = Column(String, nullable=False)
     type = Column(String, nullable=False)  # 'dog', 'cat', or 'other'
     breed = Column(String, nullable=True)  # 'other' or specific breed
-    other_breed = Column(String, nullable=True)  # User-defined breed for "other"
-    birth_date = Column(Date, nullable=True)
+    other_breed = Column(String, nullable=True)  # user-defined breed
+    birth_date = Column(DateTime, nullable=True)  # or Date if you prefer
     weight = Column(Float, nullable=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="pets")
@@ -31,7 +32,7 @@ class Treatment(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     frequency = Column(String, nullable=True)
-    next_due_date = Column(Date, nullable=True)
+    next_due_date = Column(DateTime, nullable=True)
     pet_id = Column(Integer, ForeignKey("pets.id"))
 
 class Reminder(Base):
@@ -40,5 +41,8 @@ class Reminder(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
-    due_date = Column(Date, nullable=False)
+
+    # Changed to DateTime so we can store both date & time
+    due_date = Column(DateTime, nullable=False)
+
     pet_id = Column(Integer, ForeignKey("pets.id"))

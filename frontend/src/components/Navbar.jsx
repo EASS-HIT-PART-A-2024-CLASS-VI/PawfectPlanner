@@ -8,12 +8,14 @@ function Navbar() {
 
   return (
     <AppBar position="static">
-      <Toolbar>
+      {/* Center all items on the toolbar */}
+      <Toolbar sx={{ justifyContent: "center" }}>
         <Button color="inherit" component={Link} to="/">Home</Button>
         <Button color="inherit" component={Link} to="/profile">Pet Profile</Button>
         <Button color="inherit" component={Link} to="/reminders">Reminders</Button>
         <Button color="inherit" component={Link} to="/treatments">Treatments</Button>
         <Button color="inherit" component={Link} to="/vet-locator">Find a Vet</Button>
+        <Button color="inherit" component={Link} to="/gemini-service">Gemini Chat</Button>
         {isAuthenticated ? (
           <>
             <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>

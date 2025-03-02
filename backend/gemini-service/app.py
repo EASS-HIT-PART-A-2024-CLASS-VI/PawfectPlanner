@@ -1,40 +1,86 @@
-from fastapi import FastAPI, HTTPException, Request
-import httpx
-import os
+# File: backend/gemini-service/app.py
 
-# Initialize the FastAPI app
+import os
+from fastapi import FastAPI, HTTPException, Body
+from google import genai  # The official Google library
+from pydantic import BaseModel
+import json
+
 app = FastAPI()
 
-# Load the Gemini API key from the environment variables
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY is not set. Please add it to your .env file.")
+
+# Create the Gemini client once at startup
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+# Example model name: "gemini-2.0-flash" or "gemini-1.0"
+MODEL_NAME = "gemini-2.0-flash"
+
+# A system prompt that restricts queries to pet care topics
+SYSTEM_PROMPT = """
+You are PawfectPlanner GPT, an AI specialized in pet care, behavior, and health.
+You only answer pet-related questions. If the user asks about anything else,
+politely decline or redirect them.
+"""
+
+class GeminiRequest(BaseModel):
+    """
+    Body for the /gemini/query endpoint.
+    """
+    prompt: str
+    pet: dict = {}
+    forceJSON: bool = False
 
 @app.post("/gemini/query")
-async def query_gemini(request: Request):
+async def query_gemini(data: GeminiRequest):
     """
-    Endpoint to query the Gemini API with a user-provided prompt and return the response.
+    A single endpoint to query Gemini via the google-genai library.
+
+    Request body:
+    {
+      "prompt": "...",
+      "pet": {... optional fields ...},
+      "forceJSON": boolean
+    }
     """
+
+    user_prompt = data.prompt
+    pet_data = data.pet
+    force_json = data.forceJSON
+
+    if not user_prompt.strip():
+        raise HTTPException(status_code=400, detail="Missing prompt.")
+
+    # 1) Start with system instructions to keep answers pet-related
+    final_prompt = SYSTEM_PROMPT.strip()
+
+    # 2) Add user prompt
+    final_prompt += f"\n\nUser's question: {user_prompt}"
+
+    # 3) If there's pet data, add it
+    if pet_data:
+        final_prompt += "\n\nAdditional pet data:\n"
+        for k, v in pet_data.items():
+            final_prompt += f"- {k}: {v}\n"
+
+    # 4) If we want strictly JSON, instruct the model
+    if force_json:
+        final_prompt += """
+        
+Respond ONLY in valid JSON with keys:
+{ "weight": "...", "life_span": "...", "temperament": "...", "health_issues": "..." }
+No extra text, no explanations. 
+        """
+
     try:
-        # Parse JSON from the request
-        body = await request.json()
-        prompt = body.get("prompt", "")
-        
-        if not prompt:
-            raise HTTPException(status_code=400, detail="Prompt is required")
-
-        # Define headers and payload for the Gemini API request
-        headers = {"Authorization": f"Bearer {GEMINI_API_KEY}"}
-        payload = {"prompt": prompt}
-
-        # Query the Gemini API using an asynchronous HTTP client
-        async with httpx.AsyncClient() as client:
-            response = await client.post("https://api.google.com/gemini/v1/query", headers=headers, json=payload)
-            response.raise_for_status()
-        
-        # Return the API response to the user
-        return {"response": response.json()}
-    
-    except httpx.RequestError as e:
-        raise HTTPException(status_code=500, detail=f"Request error: {str(e)}")
-    
-    except httpx.HTTPStatusError as e:
-        raise HTTPException(status_code=e.response.status_code, detail=e.response.text)
+        response = client.models.generate_content(
+            model=MODEL_NAME,
+            contents=final_prompt
+        )
+        # This returns a "Result" object; response.text is the final string
+        gemini_answer = response.text
+        return {"answer": gemini_answer}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error calling Gemini: {e}")

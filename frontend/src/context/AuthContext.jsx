@@ -1,28 +1,45 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 // Create AuthContext
 export const AuthContext = createContext();
 
-// AuthProvider Component
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("token")
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
-  // Login function (saves token in localStorage)
+  // Log in: store token in local storage, set isAuthenticated = true
   const login = (token) => {
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
   };
 
-  // Logout function (removes token)
+  // Log out: remove token, set isAuthenticated = false
   const logout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
   };
 
+  // On mount, verify the stored token by calling /auth/me.
   useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem("token"));
+    async function checkToken() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      try {
+        // This request must succeed for the token to remain valid
+        await axios.get(`${API_BASE_URL}/auth/me`);
+        setIsAuthenticated(true);
+      } catch (err) {
+        console.warn("Token invalid or expired, forcing logout");
+        logout();
+      }
+    }
+
+    checkToken();
   }, []);
 
   return (

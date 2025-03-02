@@ -1,3 +1,5 @@
+# File: backend/app/routes/auth.py
+
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from pydantic import EmailStr
@@ -19,14 +21,14 @@ DEBUG_MODE = os.getenv("DEBUG", "false").lower() == "true"
 router = APIRouter(prefix="/api/auth", tags=["Auth"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
+
 @router.post("/register")
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     """
     Register a new user with better error handling.
     """
-    if not isinstance(user.email, EmailStr):
-        raise HTTPException(status_code=400, detail="Invalid email format.")
 
+    # Ensure password meets length requirement
     if len(user.password) < 6:
         raise HTTPException(status_code=400, detail="Password must be at least 6 characters long.")
 
@@ -48,6 +50,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
             error_msg += f" [Debug: {str(e)}]"
         raise HTTPException(status_code=500, detail=error_msg)
 
+
 @router.post("/login")
 def login_user(user: UserLogin, db: Session = Depends(get_db)):
     """
@@ -66,10 +69,11 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
             error_msg += f" [Debug: {str(e)}]"
         raise HTTPException(status_code=500, detail=error_msg)
 
+
 @router.get("/me")
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """
-    Retrieve logged-in user details using JWT.
+    Retrieve logged-in user details using JWT, including user.id
     """
     payload = decode_access_token(token)
     if not payload:
@@ -81,4 +85,4 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    return {"email": str(db_user.email)}
+    return {"email": str(db_user.email), "id": db_user.id}

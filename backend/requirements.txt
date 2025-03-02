@@ -1,4 +1,5 @@
 fastapi
+pytz # Timezone handling for reminders
 uvicorn[standard]  # Uvicorn with standard dependencies (needed for production)
 sqlalchemy
 psycopg2-binary  # PostgreSQL database adapter
@@ -9,6 +10,10 @@ python-dotenv  # For managing environment variables
 httpx  # Async HTTP requests
 redis  # Redis support for caching/session storage
 ics  # iCalendar file handling
+icalendar
 email-validator  # Email validation
 python-multipart # files download/upload between program and user
 requests  # HTTP requests
+alembic  # Database migrations
+pytest  # Testing framework
+google-genai # Google Natural Language API

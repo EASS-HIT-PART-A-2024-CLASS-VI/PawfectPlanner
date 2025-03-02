@@ -1,3 +1,4 @@
+// File: frontend/src/pages/Treatments.jsx
 import { useState } from "react";
 import { saveAs } from "file-saver";
 import "../styles/Treatments.css";
@@ -75,7 +76,7 @@ const preventativeTreatments = {
   ],
 };
 
-// **Fix ICS File Formatting**
+// Fix ICS
 const generateICS = (treatment) => {
   const startDate = new Date();
   const formattedDate = startDate.toISOString().split("T")[0].replace(/-/g, "");

@@ -6,6 +6,8 @@ import { API_BASE_URL } from "../config";
 import { generatePetPDF } from "../utils/generatePDF";
 import "../styles/PetProfile.css";
 
+import { queryGeminiStrictJson } from "../api/geminiService";
+
 const PetProfile = () => {
   const { petId } = useParams();
   const navigate = useNavigate();
@@ -16,26 +18,28 @@ const PetProfile = () => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
+    // If no param is given, redirect to /dashboard
     if (!petId || petId === "undefined") {
-      setError("Invalid pet ID.");
-      setLoading(false);
+      navigate("/dashboard");
       return;
     }
-
+  
+    setLoading(true);
     axios
       .get(`${API_BASE_URL}/pets/${petId}`)
       .then((response) => {
         setPet(response.data);
         setFormData(response.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching pet:", err);
         setError("Failed to load pet details.");
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   }, [petId]);
+  
 
+  // Save updated changes
   const handleEdit = () => {
     axios
       .put(`${API_BASE_URL}/pets/${petId}`, formData)
@@ -48,6 +52,7 @@ const PetProfile = () => {
       });
   };
 
+  // Delete pet
   const handleDelete = () => {
     axios
       .delete(`${API_BASE_URL}/pets/${petId}`)
@@ -57,6 +62,26 @@ const PetProfile = () => {
       .catch((err) => {
         console.error("Error deleting pet:", err);
       });
+  };
+
+  // NEW: Call Gemini for breed data if breed == "other"
+  const handleFetchFromGemini = async () => {
+    const prompt = `Provide approximate 'weight', 'life_span', 'temperament', and 'health_issues' for a ${formData.other_breed} (pet type: ${formData.type}). Return valid JSON only.`;
+    const result = await queryGeminiStrictJson(prompt);
+    if (result.success) {
+      const { weight, life_span, temperament, health_issues } = result.data;
+      // We'll just store them in the front-end formData
+      // We can't update the backend's Pet table because there's no columns for them,
+      // but you can show them in the UI or store them in new formData fields
+      alert(`Gemini gave us:
+Weight: ${weight}
+Life Span: ${life_span}
+Temperament: ${temperament}
+Health Issues: ${health_issues}
+`);
+    } else {
+      alert("Gemini gave invalid JSON twice. Please fill data manually.");
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -99,12 +124,19 @@ const PetProfile = () => {
           <label>Weight (kg):</label>
           <input
             type="number"
-            value={formData.weight}
+            value={formData.weight || ""}
             onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
           />
 
           <button onClick={handleEdit}>Save</button>
           <button onClick={() => setEditMode(false)} className="cancel-button">Cancel</button>
+
+          {/* If the breed is 'other', show a "Fetch from Gemini" button */}
+          {formData.breed === "other" && (
+            <button type="button" onClick={handleFetchFromGemini}>
+              Fetch Data from Gemini
+            </button>
+          )}
         </div>
       ) : (
         <button onClick={() => setEditMode(true)}>Edit</button>

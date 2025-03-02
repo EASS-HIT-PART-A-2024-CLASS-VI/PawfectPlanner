@@ -142,8 +142,8 @@ Create a .env file at the root directory:
 ```bash
 echo 'POSTGRES_USER=postgres
 POSTGRES_PASSWORD=DB4PawfectPlanner
-POSTGRES_DB=pets_db
-DATABASE_URL=postgresql://postgres:DB4PawfectPlanner@db:5432/pets_db
+POSTGRES_DB=pawfectplanner
+DATABASE_URL=postgresql://postgres:DB4PawfectPlanner@db:5432/pawfectplanner
 GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>
 DOG_API_KEY=<YOUR_DOG_API_KEY>' > .env
 ```

@@ -1,5 +1,5 @@
 import pytest
-from app.util import validate_email, parse_date
+from backend.app.util import validate_email, parse_date
 
 def test_validate_email():
     assert validate_email("test@example.com") is True
