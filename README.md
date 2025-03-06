@@ -82,7 +82,8 @@ Make sure Docker Desktop (or Docker Engine) is running. Only then open your WSL 
   ```
 
 *Step 3: Create the .env File:*
-  Inside your WSL shell:
+
+Inside your WSL shell:
 
   ```bash
   cat <<EOF > .env
@@ -99,7 +100,7 @@ Make sure Docker Desktop (or Docker Engine) is running. Only then open your WSL 
   EOF
   ```
 
-# Replace <YOUR_GEMINI_API_KEY> / <YOUR_DOG_API_KEY> with valid credentials.
+*Replace <YOUR_GEMINI_API_KEY> / <YOUR_DOG_API_KEY> with valid credentials.*
 
 Need an API key?
 
