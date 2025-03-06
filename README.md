@@ -15,7 +15,12 @@
 ---
 
 ## 🎥 Demo
-> _Coming soon!_
+<a href="https://youtu.be/evx-q7IXau8" target="_blank">
+  <img  
+    alt="PawfectPlanner demo" 
+    width="100%"
+  />
+</a>
 
 ---
 
