@@ -15,12 +15,14 @@
 ---
 
 ## 🎥 Demo
-<a href="https://youtu.be/evx-q7IXau8" target="_blank">
+<a href="https://youtu.be/75CqKQNeLXs" target="_blank">
   <img  
+    src="https://img.youtube.com/vi/75CqKQNeLXs/0.jpg"
     alt="PawfectPlanner demo" 
     width="100%"
   />
 </a>
+
 
 ---
 
@@ -138,6 +140,7 @@ Frontend: http://localhost:3000
 API Docs: http://localhost:8000/docs for Swagger. 
 Gemini Chat: Access the “PawfectGPT” page from the main app UI (top nav). 
 
+![Project Diagram](frontend/public/Project%20Diagram.drawio.png)
 
 🗄️ Project Structure  
 
