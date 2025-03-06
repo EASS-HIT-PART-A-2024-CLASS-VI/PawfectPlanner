@@ -1,18 +1,31 @@
-import pytest
-from fastapi.testclient import TestClient
-from backend.app.main import app
+# File: tests/test_auth.py
 
-client = TestClient(app)
+def test_register_and_login(client):
+    # 1) Register
+    register_payload = {"email": "testuser@example.com", "password": "secretpass"}
+    reg_res = client.post("/auth/register", json=register_payload)
+    assert reg_res.status_code == 200, reg_res.text
+    # optionally check reg_res.json() if it returns user info
 
-@pytest.mark.parametrize("email, password, expected_status", [
-    ("newuser@example.com", "securepassword", 200),  # New user
-    ("testuser@example.com", "securepassword", 400),  # Duplicate user
-])
-def test_register_user(email, password, expected_status):
-    response = client.post("/api/auth/register", json={"email": email, "password": password})
-    assert response.status_code == expected_status
+    # 2) Login
+    login_payload = {"email": "testuser@example.com", "password": "secretpass"}
+    login_res = client.post("/auth/login", json=login_payload)
+    assert login_res.status_code == 200, login_res.text
+    data = login_res.json()
+    assert "access_token" in data
+    token = data["access_token"]
+    assert token, "Token should not be empty"
 
+def test_auth_me(client):
+    # 1) Register & login
+    register_payload = {"email": "myme@example.com", "password": "mypassword"}
+    client.post("/auth/register", json=register_payload)
+    login_res = client.post("/auth/login", json=register_payload)
+    token = login_res.json()["access_token"]
 
-def test_login_user():
-    response = client.post("/api/auth/login", json={"email": "testuser@example.com", "password": "securepassword"})
-    assert response.status_code in [200, 401]  # 401 if wrong password
+    # 2) Call /auth/me with the token
+    headers = {"Authorization": f"Bearer {token}"}
+    me_res = client.get("/auth/me", headers=headers)
+    assert me_res.status_code == 200, me_res.text
+    me_data = me_res.json()
+    assert me_data["email"] == "myme@example.com"

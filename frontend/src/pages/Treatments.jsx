@@ -36,13 +36,15 @@ const vaccineData = {
       name: "Quadrivalent Vaccine",
       frequency: "Yearly",
       mandatory: true,
-      description: "Protects against Panleukopenia, Herpesvirus, Calicivirus, and Chlamydia.",
+      description:
+        "Protects against Panleukopenia, Herpesvirus, Calicivirus, and Chlamydia.",
     },
     {
       name: "Feline Leukemia Virus (FeLV)",
       frequency: "Yearly",
       mandatory: false,
-      description: "Recommended for outdoor cats to protect against immune system diseases.",
+      description:
+        "Recommended for outdoor cats to protect against immune system diseases.",
     },
   ],
 };
@@ -71,16 +73,17 @@ const preventativeTreatments = {
     {
       name: "Internal Parasite Treatment",
       frequency: "Every 3-6 months",
-      description: "Prevents intestinal worms causing weight loss, vomiting, and diarrhea.",
+      description:
+        "Prevents intestinal worms causing weight loss, vomiting, and diarrhea.",
     },
   ],
 };
 
-// Fix ICS
+// ICS generator
 const generateICS = (treatment) => {
   const startDate = new Date();
   const formattedDate = startDate.toISOString().split("T")[0].replace(/-/g, "");
-  
+
   const event = `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
@@ -96,6 +99,10 @@ END:VCALENDAR`;
 
 function Treatments() {
   const [petType, setPetType] = useState("Dog");
+
+  const addToCalendar = (item) => {
+    generateICS(item);
+  };
 
   return (
     <div className="treatments-container">
@@ -113,7 +120,12 @@ function Treatments() {
             <strong>{vaccine.name}</strong> ({vaccine.frequency}){" "}
             {vaccine.mandatory && <span className="mandatory">Mandatory</span>}
             <p>{vaccine.description}</p>
-            <button className="download-btn" onClick={() => generateICS(vaccine)}>Download ICS</button>
+            <button
+              className="download-btn"
+              onClick={() => addToCalendar(vaccine)}
+            >
+              Add to Calendar
+            </button>
           </li>
         ))}
       </ul>
@@ -124,7 +136,12 @@ function Treatments() {
           <li key={treatment.name} className="treatment-item">
             <strong>{treatment.name}</strong> ({treatment.frequency})
             <p>{treatment.description}</p>
-            <button className="download-btn" onClick={() => generateICS(treatment)}>Download ICS</button>
+            <button
+              className="download-btn"
+              onClick={() => addToCalendar(treatment)}
+            >
+              Add to Calendar
+            </button>
           </li>
         ))}
       </ul>

@@ -1,16 +1,19 @@
+// File: frontend/src/App.jsx
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import PetProfile from "./pages/PetProfile";
+import AddPet from "./pages/AddPet";
+import EditPet from "./pages/EditPet";
 import Reminders from "./pages/Reminders";
 import Treatments from "./pages/Treatments";
-import VetLocator from "./pages/VetLocator";
+import ServiceLocator from "./pages/ServiceLocator";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
-import GeminiService from "./pages/GeminiService";  // <--- If you want this route
+import PawfectGPT from "./pages/PawfectGPT";
 import { ScaleLoader } from "react-spinners";
 
 function PrivateRoute({ children }) {
@@ -38,16 +41,42 @@ function App() {
       <Navbar />
       <div className="container">
         <Routes>
+          {/* Public Home */}
           <Route path="/" element={<Home />} />
-          
-          {/* Public route for GeminiService if you want anyone to access it */}
-          <Route path="/gemini-service" element={<GeminiService />} />
 
+          {/* Public PawfectGPT route */}
+          <Route path="/pawfectgpt" element={<PawfectGPT />} />
+
+          {/* Protected Routes */}
           <Route
-            path="/profile"
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/add-pet"
+            element={
+              <PrivateRoute>
+                <AddPet />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile/:petId"
             element={
               <PrivateRoute>
                 <PetProfile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-pet/:petId"
+            element={
+              <PrivateRoute>
+                <EditPet />
               </PrivateRoute>
             }
           />
@@ -68,23 +97,19 @@ function App() {
             }
           />
           <Route
-            path="/vet-locator"
+            path="/services"
             element={
               <PrivateRoute>
-                <VetLocator />
+                <ServiceLocator />
               </PrivateRoute>
             }
           />
+
+          {/* Public Auth */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
+
+          {/* Fallback */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>

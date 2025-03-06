@@ -1,151 +1,195 @@
-// src/pages/PetProfile.jsx
+// File: frontend/src/pages/PetProfile.jsx
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { API_BASE_URL } from "../config";
+import axiosInstance from "../services/axiosSetup";
 import { generatePetPDF } from "../utils/generatePDF";
+import { differenceInYears } from "date-fns";
 import "../styles/PetProfile.css";
 
-import { queryGeminiStrictJson } from "../api/geminiService";
-
-const PetProfile = () => {
+function PetProfile() {
   const { petId } = useParams();
   const navigate = useNavigate();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    // If no param is given, redirect to /dashboard
-    if (!petId || petId === "undefined") {
-      navigate("/dashboard");
-      return;
+    async function fetchPet() {
+      try {
+        const res = await axiosInstance.get(`/pets/${petId}`);
+        setPet(res.data);
+      } catch (err) {
+        console.error("Failed to load pet:", err);
+        setError("Could not load pet details.");
+      } finally {
+        setLoading(false);
+      }
     }
-  
-    setLoading(true);
-    axios
-      .get(`${API_BASE_URL}/pets/${petId}`)
-      .then((response) => {
-        setPet(response.data);
-        setFormData(response.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching pet:", err);
-        setError("Failed to load pet details.");
-      })
-      .finally(() => setLoading(false));
+    fetchPet();
   }, [petId]);
+
+  if (loading) return <p>Loading pet data...</p>;
+  if (error) return <p className="error">{error}</p>;
+  if (!pet) return <p>No pet found with ID {petId}</p>;
+
+  /**
+   * Checks if pet.weight is outside the recommended average_weight_range
+   * (if provided by the breed API). Returns a warning string if so.
+   */
+  const getWeightWarning = () => {
+    // If no average range or no weight, skip
+    if (!pet.average_weight_range || pet.average_weight_range === "Unknown" || !pet.weight) {
+      return "";
+    }
   
-
-  // Save updated changes
-  const handleEdit = () => {
-    axios
-      .put(`${API_BASE_URL}/pets/${petId}`, formData)
-      .then((response) => {
-        setPet(response.data);
-        setEditMode(false);
-      })
-      .catch((err) => {
-        console.error("Error updating pet:", err);
-      });
+    // Example: "9 - 13" or "25 - 34" or sometimes just "13"
+    let rangeStr = pet.average_weight_range.trim().replace(/\s*kg\s*/gi, "");
+    const parts = rangeStr.split("-").map((p) => p.trim());
+  
+    if (parts.length === 2) {
+      // Normal dash‐based range
+      const minVal = parseFloat(parts[0]);
+      const maxVal = parseFloat(parts[1]);
+      if (!isNaN(minVal) && !isNaN(maxVal)) {
+        const lower = minVal * 0.8; // 20% below min
+        const upper = maxVal * 1.2; // 20% above max
+        if (pet.weight < lower || pet.weight > upper) {
+          return "Weight is far from the breed's average!";
+        }
+      }
+    } else if (parts.length === 1) {
+      // Single numeric value: treat it as val ± 20%
+      const val = parseFloat(parts[0]);
+      if (!isNaN(val)) {
+        const lower = val * 0.8;
+        const upper = val * 1.2;
+        if (pet.weight < lower || pet.weight > upper) {
+          return "Weight is far from the breed's average!";
+        }
+      }
+    }
+    return "";
   };
 
-  // Delete pet
-  const handleDelete = () => {
-    axios
-      .delete(`${API_BASE_URL}/pets/${petId}`)
-      .then(() => {
-        navigate("/dashboard");
-      })
-      .catch((err) => {
-        console.error("Error deleting pet:", err);
-      });
-  };
+  // Compute approximate age if birth_date is available
+  let ageString = "";
+  if (pet.birth_date) {
+    try {
+      const birth = new Date(pet.birth_date);
+      const ageYears = differenceInYears(new Date(), birth);
+      ageString = ` (Age ~ ${ageYears})`;
+    } catch (error) {
+      // fallback
+    }
+  }
 
-  // NEW: Call Gemini for breed data if breed == "other"
-  const handleFetchFromGemini = async () => {
-    const prompt = `Provide approximate 'weight', 'life_span', 'temperament', and 'health_issues' for a ${formData.other_breed} (pet type: ${formData.type}). Return valid JSON only.`;
-    const result = await queryGeminiStrictJson(prompt);
-    if (result.success) {
-      const { weight, life_span, temperament, health_issues } = result.data;
-      // We'll just store them in the front-end formData
-      // We can't update the backend's Pet table because there's no columns for them,
-      // but you can show them in the UI or store them in new formData fields
-      alert(`Gemini gave us:
-Weight: ${weight}
-Life Span: ${life_span}
-Temperament: ${temperament}
-Health Issues: ${health_issues}
-`);
-    } else {
-      alert("Gemini gave invalid JSON twice. Please fill data manually.");
+  /**
+   * Delete the pet by ID, then navigate back to dashboard.
+   */
+  const handleDelete = async () => {
+    try {
+      await axiosInstance.delete(`/pets/${petId}`);
+      alert("Pet deleted successfully!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error deleting pet:", error);
+      alert("Could not delete pet.");
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="error">{error}</p>;
+  const weightWarning = getWeightWarning();
 
   return (
     <div className="pet-profile">
       <h2>{pet.name}'s Profile</h2>
+
+      <p><strong>Type:</strong> {pet.type}</p>
       <p><strong>Breed:</strong> {pet.breed}</p>
-
-      {pet.breed_info && (
-        <div className="breed-info">
-          <p><strong>Life Expectancy:</strong> {pet.breed_info.life_expectancy || "Unknown"}</p>
-          <p><strong>Temperament:</strong> {pet.breed_info.temperament || "Unknown"}</p>
-          <p><strong>Known Health Issues:</strong> {pet.breed_info.health_issues || "None"}</p>
-          <p>
-            <strong>Weight:</strong> {pet.weight} kg
-            {pet.breed_info.average_weight && (
-              <span> (Recommended: {pet.breed_info.average_weight} kg)</span>
-            )}
-          </p>
-          {pet.weight &&
-            pet.breed_info.average_weight &&
-            (pet.weight > parseFloat(pet.breed_info.average_weight) * 1.2 ||
-              pet.weight < parseFloat(pet.breed_info.average_weight) * 0.8) && (
-              <p className="warning">⚠️ {pet.name} is outside the recommended weight range!</p>
-            )}
-        </div>
+      {pet.breed === "other" && pet.other_breed && (
+        <p><strong>Other Breed:</strong> {pet.other_breed}</p>
       )}
 
-      {editMode ? (
-        <div className="edit-form">
-          <label>Pet Name:</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-          
-          <label>Weight (kg):</label>
-          <input
-            type="number"
-            value={formData.weight || ""}
-            onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-          />
-
-          <button onClick={handleEdit}>Save</button>
-          <button onClick={() => setEditMode(false)} className="cancel-button">Cancel</button>
-
-          {/* If the breed is 'other', show a "Fetch from Gemini" button */}
-          {formData.breed === "other" && (
-            <button type="button" onClick={handleFetchFromGemini}>
-              Fetch Data from Gemini
-            </button>
-          )}
-        </div>
-      ) : (
-        <button onClick={() => setEditMode(true)}>Edit</button>
+      {/* Birth Date + approximate age */}
+      {pet.birth_date && (
+        <p>
+          <strong>Birth Date:</strong>{" "}
+          {new Date(pet.birth_date).toLocaleDateString()}
+          {ageString}
+        </p>
       )}
 
-      <button onClick={handleDelete} className="delete-button">Delete Pet</button>
-      <button onClick={() => generatePetPDF(pet)} className="download-pdf">Download Pet Profile</button>
+      {/* Weight */}
+      <p>
+        <strong>Weight:</strong>{" "}
+        {pet.weight ? `${pet.weight} kg` : "Not defined"}
+      </p>
+
+      {/* Additional breed data */}
+      {pet.average_weight_range && (
+        <p>
+          <strong>Recommended Range:</strong> {pet.average_weight_range} kg
+        </p>
+      )}
+      {pet.life_expectancy && (
+        <p>
+          <strong>Life Expectancy:</strong> {pet.life_expectancy}
+        </p>
+      )}
+      {pet.temperament && (
+        <p>
+          <strong>Temperament:</strong> {pet.temperament}
+        </p>
+      )}
+      {pet.bred_for && (
+        <p>
+          <strong>Bred For:</strong> {pet.bred_for}
+        </p>
+      )}
+      {pet.breed_group && (
+        <p>
+          <strong>Breed Group:</strong> {pet.breed_group}
+        </p>
+      )}
+
+      {/* Health & Behavior */}
+      {pet.health_issues && pet.health_issues.length > 0 && (
+        <p>
+          <strong>Health Issues:</strong>{" "}
+          {pet.health_issues.join(", ")}
+        </p>
+      )}
+      {pet.behavior_issues && pet.behavior_issues.length > 0 && (
+        <p>
+          <strong>Behavior Issues:</strong>{" "}
+          {pet.behavior_issues.join(", ")}
+        </p>
+      )}
+
+      {/* Weight warning if out-of-range */}
+      {weightWarning && (
+        <p className="warning" style={{ color: "red", fontWeight: "bold" }}>
+          {weightWarning}
+        </p>
+      )}
+
+      <div className="pet-actions" style={{ marginTop: "1rem" }}>
+        <button
+          style={{ marginRight: "1rem" }}
+          onClick={() => generatePetPDF(pet)}
+        >
+          Download Pet Profile PDF
+        </button>
+        <button
+          style={{ marginRight: "1rem" }}
+          onClick={() => navigate(`/edit-pet/${pet.id}`)}
+        >
+          Edit Pet
+        </button>
+        <button onClick={handleDelete}>Delete Pet</button>
+      </div>
     </div>
   );
-};
+}
 
 export default PetProfile;

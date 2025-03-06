@@ -1,0 +1,89 @@
+/* File: frontend/src/styles/PawfectGPT.css */
+
+.pawfect-gpt-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  background-color: rgba(245, 222, 179, 0.95);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.pawfect-gpt-container h2 {
+  margin-bottom: 1rem;
+}
+
+.toggle-wrapper {
+  margin-bottom: 1rem;
+}
+
+/* Chat Window - no border, padding, or background by default */
+.chat-window {
+  /* no min-height */
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* When messages exist, add a white box with border & padding */
+.chat-window.has-messages {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Bubbles */
+.chat-bubble {
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: inline-block;
+  max-width: 80%;
+  clear: both; /* ensure each bubble is on its own line */
+}
+
+.user-bubble {
+  background-color: #d6efff; /* light blue */
+  color: #333;
+  float: left; /* user messages on the left */
+}
+
+.assistant-bubble {
+  background-color: #f2f2f2; /* light gray */
+  color: #333;
+  float: right; /* AI messages on the right */
+}
+
+/* Input Section */
+.input-section {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.input-section textarea {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+  font-family: inherit;
+}
+
+.input-section button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #87CEEB;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.input-section button:hover {
+  background-color: #4682B4;
+}

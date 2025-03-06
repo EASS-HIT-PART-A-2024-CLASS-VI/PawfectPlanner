@@ -1,0 +1,30 @@
+/* File: frontend/src/styles/ServiceLocator.css */
+
+.service-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.service-container h2 {
+  margin-bottom: 1rem;
+}
+
+/* Additional spacing for the buttons row: */
+.service-container button {
+  margin: 0.5rem;
+  background-color: #4682B4;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.service-container button:hover {
+  background-color: #315A89;
+}

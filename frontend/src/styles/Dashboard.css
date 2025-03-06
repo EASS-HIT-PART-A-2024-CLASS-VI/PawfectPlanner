@@ -1,18 +1,28 @@
+/* File: frontend/src/styles/Dashboard.css */
+
 .dashboard-container {
-    text-align: center;
-    padding: 20px;
-    background: #FAE6C9;
-  }
-  
-  .pet-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .pet-item {
-    background: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-  }
-  
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px;
+  background-color: rgba(245, 222, 179, 0.95);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.no-pets,
+.pets-list {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.no-pets button,
+.pets-list button {
+  margin-top: 1rem;
+}
+
+.pets-list ul {
+  list-style-type: none; /* remove default bullet */
+  padding: 0;
+  margin: 0;
+  text-align: center; /* center all content */
+}

@@ -1,97 +1,56 @@
-// File: src/pages/Dashboard.jsx
+// File: frontend/src/pages/Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { API_BASE_URL } from "../config";
+import axiosInstance from "../services/axiosSetup";
 import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchPets() {
       try {
-        const res = await axios.get(`${API_BASE_URL}/auth/me`);
-        return res.data; // e.g. { email: "...", id: 123 }
-      } catch (err) {
-        console.error("Failed to fetch user info:", err);
-        return null;
-      }
-    }
-
-    async function init() {
-      // 1) Fetch user info
-      const userData = await fetchUser();
-      if (userData && userData.id) {
-        setUserId(userData.id);
-      } else {
-        console.warn("No user ID found. Creating a pet may fail if schema requires owner_id.");
-      }
-
-      // 2) Fetch existing pets
-      try {
-        const petsRes = await axios.get(`${API_BASE_URL}/pets`);
-        setPets(petsRes.data);
+        const res = await axiosInstance.get("/pets");
+        setPets(res.data);
       } catch (err) {
         console.error("Failed to fetch pets:", err);
-        setError("Failed to load pet data. Please try again later.");
+        setError("Could not load pets.");
+        setPets([]);
       } finally {
         setLoading(false);
       }
     }
-
-    init();
+    fetchPets();
   }, []);
-
-  // Called when user clicks "Create a Pet"
-  const handleCreatePet = async () => {
-    try {
-      if (!userId) {
-        alert("No user ID found. Please ensure you're logged in.");
-        return;
-      }
-
-      // Must include type to satisfy PetBase schema (dog/cat/other)
-      const createRes = await axios.post(`${API_BASE_URL}/pets`, {
-        name: "New Pet",
-        breed: "Unknown",
-        weight: 0,
-        owner_id: userId,
-        type: "dog" // or 'cat'/'other'
-      });
-
-      alert("Pet created!");
-      navigate(`/profile/${createRes.data.id}`);
-    } catch (err) {
-      console.error("Error creating pet:", err);
-      setError("Could not create a pet.");
-    }
-  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-container">
       <h2>Your Pets</h2>
       {pets.length === 0 ? (
-        <>
-          <p>No pets found.</p>
-          <button onClick={handleCreatePet}>Create a Pet</button>
-        </>
+        <div className="no-pets">
+          <p>No pets found. Start by adding a pet!</p>
+          <button onClick={() => navigate("/add-pet")}>Add a Pet</button>
+        </div>
       ) : (
-        <ul>
-          {pets.map((pet) => (
-            <li key={pet.id}>
-              <strong>{pet.name}</strong> - {pet.breed}{" "}
-              <button onClick={() => navigate(`/profile/${pet.id}`)}>View</button>
-            </li>
-          ))}
-        </ul>
+        <div className="pets-list">
+          <button onClick={() => navigate("/add-pet")}>Add a Pet</button>
+          <ul>
+            {pets.map((pet) => (
+              <li key={pet.id}>
+                <strong>{pet.name}</strong> - {pet.breed}{" "}
+                <button onClick={() => navigate(`/profile/${pet.id}`)}>
+                  View
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

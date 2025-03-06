@@ -1,34 +1,43 @@
+/* File: frontend/src/styles/Auth.css */
+
 .auth-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
-    background: #FAE6C9;
-    text-align: center;
-    border-radius: 10px;
-  }
-  
-  .auth-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .auth-container button {
-    background: #87CEEB;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .auth-container button:hover {
-    background: #4682B4;
-  }
-  
-  .auth-container .error {
-    color: red;
-    font-weight: bold;
-  }
-  
+  max-width: 400px;
+  margin: 2rem auto;
+  background-color: rgba(245, 222, 179, 0.95);
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+}
+
+.auth-container h2 {
+  margin-bottom: 1rem;
+}
+
+.auth-container input {
+  width: 80%;
+  padding: 10px;
+  margin: 0.5rem auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: block;
+}
+
+.auth-container button {
+  background: #87CEEB;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.auth-container button:hover {
+  background: #4682B4;
+}
+
+.auth-container .error {
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
+}

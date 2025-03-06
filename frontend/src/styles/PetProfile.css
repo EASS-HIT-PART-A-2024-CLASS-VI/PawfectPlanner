@@ -1,41 +1,24 @@
+/* File: frontend/src/styles/PetProfile.css */
 .pet-profile {
-  padding: 20px;
-  background-color: #f5f5dc; /* Light beige */
-  border-radius: 10px;
-  text-align: center;
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: rgba(245, 222, 179, 0.95);
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center; /* center content */
 }
 
-.breed-info {
-  margin-top: 15px;
-  background-color: #ffffff;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
-
-.warning {
+.pet-profile .warning {
   color: red;
   font-weight: bold;
 }
 
-button {
-  padding: 10px 15px;
-  margin: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
 }
 
-button.download-pdf {
-  background-color: #007bff;
-  color: white;
-}
-
-button.delete-button {
-  background-color: #ff4444;
-  color: white;
-}
-
-button:hover {
-  opacity: 0.8;
+.pet-actions button {
+  margin-right: 0.5rem;
 }

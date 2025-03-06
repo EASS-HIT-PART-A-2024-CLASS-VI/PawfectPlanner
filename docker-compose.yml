@@ -1,15 +1,16 @@
 version: '3.9'
+
 services:
   db:
     image: postgres:15
-    container_name: pawfect-planner-db
     restart: always
     env_file:
-      - .env  # ✅ Loads environment variables from .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      - .env
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - "5432:5432"
     volumes:
@@ -17,33 +18,41 @@ services:
     networks:
       - app_network
 
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: pawfect-planner-backend
     env_file:
-      - .env  # ✅ Ensures DATABASE_URL and DOG_API_KEY load correctly
-    ports:
-      - "8000:8000"
+      - .env
     volumes:
       - ./backend:/app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - app_network
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
 
   gemini-service:
     build:
       context: ./backend
-      dockerfile: gemini-service/Dockerfile
-    container_name: gemini-service
+      dockerfile: gemini_service/Dockerfile
     env_file:
       - .env
-    ports:
-      - "5000:5000"
     volumes:
-      - ./backend/gemini-service:/app
+      - ./backend/gemini_service:/app/gemini_service
     depends_on:
       - backend
     networks:
@@ -53,13 +62,13 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: pawfect-planner-frontend
-    ports:
-      - "3000:80"  # ✅ Mapping (3000 -> 80 for Nginx)
-    volumes:
-      - ./frontend:/app
+    env_file:
+      - .env
     depends_on:
       - backend
+      - gemini-service
+    ports:
+      - "3000:80"
     networks:
       - app_network
 

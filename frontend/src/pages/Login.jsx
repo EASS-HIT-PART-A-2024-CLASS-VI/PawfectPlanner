@@ -1,8 +1,10 @@
-// src/pages/Login.jsx
+// File: frontend/src/pages/Login.jsx
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
 import { AuthContext } from "../context/AuthContext";
+import "../styles/global.css";  // main global
+import "../styles/Auth.css";    // for narrower fields
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,10 +16,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(email, password);
-      // response.data => { access_token, token_type }
       if (response && response.access_token) {
-        // Update our AuthContext so isAuthenticated = true
-        contextLogin(response.access_token);
+        contextLogin(response.access_token); // store token in context
         alert("Login successful!");
         navigate("/dashboard");
       } else {
@@ -30,23 +30,26 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className="auth-container">
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 

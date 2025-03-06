@@ -1,33 +1,108 @@
 /* File: frontend/src/styles/Reminders.css */
 
-/* Container styling */
-.reminders-page {
+.reminders-container {
   max-width: 600px;
-  margin: 1rem auto;
-  padding: 1rem;
-  background-color: rgba(245, 222, 179, 0.85); /* wheat overlay */
+  margin: 3rem auto;
+  background-color: rgba(245, 222, 179, 0.95);
+  padding: 1.5rem;
   border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
   text-align: center;
 }
 
-.reminder-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.reminders-container h2 {
   margin-bottom: 1rem;
 }
 
-.reminder-list {
+.reminders-container form {
   display: flex;
-  flex-direction: column; 
-  gap: 1rem; 
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* Each field is consistent width */
+.reminder-field {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 0.5rem; /* spacing between fields */
+}
+
+.reminder-field label {
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+/* Apply the same style/width to input and select. */
+.reminder-field input,
+.reminder-field select {
+  width: 100%;           /* Exactly the same width */
+  padding: 0.5rem;
+  margin-bottom: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* ensures consistent sizing */
+}
+
+/* If you have a small inline group (e.g., for repetition interval) */
+.small-inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.small-inline label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+/* Buttons */
+.reminders-container button {
+  background-color: #87CEEB;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.reminders-container button:hover {
+  background-color: #4682B4;
+  color: #fff;
+}
+
+/* Reminder list styling */
+.reminder-list {
+  list-style: none;
   margin-top: 1rem;
+  padding: 0;
 }
 
 .reminder-item {
-  display: block;
   background: #fff;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
   border: 1px solid #ddd;
-  padding: 8px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+/* Example styling for the "Add to Calendar" / "Delete" buttons */
+.reminder-item button {
+  margin-left: 0.5rem;
+  background-color: #f0ad4e;
+  border: none;
+  padding: 5px 8px;
   border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.reminder-item button:hover {
+  background-color: #ec971f;
+  color: #fff;
 }

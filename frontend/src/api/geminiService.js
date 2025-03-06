@@ -1,28 +1,23 @@
 // File: frontend/src/api/geminiService.js
+import { geminiAxios } from "../services/axiosSetup.js";
 
-import axios from "axios";
-
-/**
- * We skip API_BASE_URL for now, calling the Gemini container directly.
- * If you prefer an Nginx reverse proxy, you can set that up. 
- * But simplest is direct to http://localhost:5000
- */
-
-const GEMINI_URL = "http://localhost:5000/gemini/query";
+// We'll hit "/gemini/query" instead of a hard-coded localhost URL
+const GEMINI_ENDPOINT = "/query";
 
 /**
  * queryGemini: Basic usage to get a free-form answer
  */
 export async function queryGemini(prompt, pet = {}) {
   try {
-    const response = await axios.post(GEMINI_URL, {
+    const response = await geminiAxios.post(GEMINI_ENDPOINT, {
       prompt,
       pet,
-      forceJSON: false
+      forceJSON: false,
     });
     return response.data.answer || "No response from AI.";
   } catch (error) {
     console.error("Error fetching Gemini AI response:", error);
+    // You could throw an Error here or return a more descriptive message
     return "Could not fetch AI advice.";
   }
 }
@@ -30,10 +25,8 @@ export async function queryGemini(prompt, pet = {}) {
 /**
  * queryGeminiStrictJson: tries to get strict JSON with the specified keys:
  * { weight, life_span, temperament, health_issues }
- * We'll do up to 2 attempts if parsing fails.
  */
 export async function queryGeminiStrictJson(prompt, pet = {}) {
-  // 1st attempt
   const initial = await attemptJson(prompt, pet);
   if (initial.success) {
     return { success: true, data: initial.data };
@@ -54,10 +47,10 @@ export async function queryGeminiStrictJson(prompt, pet = {}) {
 
 async function attemptJson(prompt, pet) {
   try {
-    const response = await axios.post(GEMINI_URL, {
+    const response = await geminiAxios.post(GEMINI_ENDPOINT, {
       prompt,
       pet,
-      forceJSON: true
+      forceJSON: true,
     });
     const text = response.data.answer || "";
     const parsed = JSON.parse(text);

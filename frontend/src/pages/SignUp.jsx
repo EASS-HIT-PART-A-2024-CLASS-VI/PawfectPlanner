@@ -1,6 +1,9 @@
+// File: frontend/src/pages/SignUp.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../services/authService";
+import "../styles/global.css";
+import "../styles/Auth.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -15,8 +18,6 @@ const Signup = () => {
       navigate("/dashboard");
     } catch (err) {
       console.error("Signup error:", err.response || err);
-
-      // Show meaningful error messages
       if (err.response) {
         const status = err.response.status;
         if (status === 400) {
@@ -35,7 +36,7 @@ const Signup = () => {
   };
 
   return (
-    <div>
+    <div className="auth-container">
       <h2>Sign Up</h2>
       <form onSubmit={handleSignup}>
         <input

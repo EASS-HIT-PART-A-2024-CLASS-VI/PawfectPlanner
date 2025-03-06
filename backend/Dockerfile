@@ -1,21 +1,22 @@
-# Use a Python base image for the backend
+# File: backend/Dockerfile
+
 FROM python:3.12-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy requirements first to leverage caching
+# 1) Copy and install dependencies
 COPY requirements.txt .
-
-# Install dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the backend code
-COPY . .
+# 2) Make /app the package root
+ENV PYTHONPATH=/app
 
-# Expose backend port
+# 3) Copy all backend code into /app
+COPY . /app
+
+# 4) Expose port 8000 for the API
 EXPOSE 8000
 
-# Set the entrypoint for the container
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# 5) Run the FastAPI app using uvicorn
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
